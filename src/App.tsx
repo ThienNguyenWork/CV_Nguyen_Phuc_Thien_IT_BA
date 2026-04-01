@@ -296,41 +296,54 @@ const ExperienceTimelineItem: React.FC<{
   role: string; 
   period: string; 
   duration: string; 
-  description: string[] 
+  description: string[];
+  index: number;
 }> = ({ 
   company, 
   role, 
   period, 
   duration, 
-  description 
-}) => (
-  <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="relative pl-8 pb-12 border-l border-white/10 last:pb-0"
-  >
-    <div className="absolute left-[-5px] top-2 w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
-    <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-4">
-      <div>
-        <h3 className="text-xl font-bold text-white mb-1">{role}</h3>
-        <p className="text-blue-400 font-medium">{company}</p>
-      </div>
-      <div className="text-left md:text-right mt-2 md:mt-0">
-        <p className="text-sm font-mono text-gray-400">{period}</p>
-        <p className="text-xs font-mono text-gray-500 uppercase tracking-wider">{duration}</p>
-      </div>
+  description,
+  index
+}) => {
+  const isEven = index % 2 === 0;
+  
+  return (
+    <div className={`relative flex flex-col md:flex-row items-center justify-between mb-16 w-full ${isEven ? 'md:flex-row-reverse' : ''}`}>
+      {/* Connector Line for Mobile */}
+      <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-white/10 -translate-x-1/2 md:hidden" />
+      
+      <motion.div 
+        initial={{ opacity: 0, x: isEven ? 50 : -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: index * 0.1 }}
+        className="w-full md:w-[45%] pl-12 md:pl-0"
+      >
+        <SpotlightCard className="p-6 bg-[#0a0a0a] border border-white/5 hover:border-blue-500/30 transition-all group">
+          <div className="flex flex-col mb-4">
+            <span className="text-[10px] font-mono text-blue-500 uppercase tracking-[0.2em] mb-2">{period}</span>
+            <h3 className="text-xl font-bold text-white leading-tight group-hover:text-blue-400 transition-colors">{role}</h3>
+            <p className="text-gray-400 font-medium text-sm mt-1">{company} • <span className="text-gray-500 italic">{duration}</span></p>
+          </div>
+          <ul className="space-y-3">
+            {description.map((item, idx) => (
+              <li key={idx} className="flex items-start text-gray-400 text-sm leading-relaxed">
+                <div className="w-1 h-1 rounded-full bg-blue-500 mt-1.5 mr-3 flex-shrink-0 shadow-[0_0_5px_rgba(59,130,246,0.5)]" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </SpotlightCard>
+      </motion.div>
+
+      {/* Center Dot */}
+      <div className="absolute left-4 md:left-1/2 top-8 md:top-1/2 w-4 h-4 rounded-full bg-blue-600 border-4 border-[#030303] -translate-x-1/2 md:-translate-y-1/2 z-20 shadow-[0_0_15px_rgba(37,99,235,0.5)]" />
+      
+      <div className="hidden md:block w-[45%]" />
     </div>
-    <ul className="space-y-3">
-      {description.map((item, idx) => (
-        <li key={idx} className="flex items-start text-gray-400 text-sm leading-relaxed group">
-          <CheckCircle2 className="w-4 h-4 mr-3 mt-0.5 text-blue-500/40 group-hover:text-blue-500 transition-colors flex-shrink-0" />
-          {item}
-        </li>
-      ))}
-    </ul>
-  </motion.div>
-);
+  );
+};
 
 export default function App() {
   const containerRef = useRef(null);
@@ -574,8 +587,11 @@ export default function App() {
             <h2 className="text-5xl md:text-7xl font-black tracking-tight text-white">Work Experience.</h2>
           </div>
           
-          <div className="relative max-w-4xl mx-auto">
-            <div className="space-y-12">
+          <div className="relative max-w-6xl mx-auto px-4">
+            {/* Vertical Tree Line */}
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-blue-600/50 via-white/10 to-transparent -translate-x-1/2" />
+            
+            <div className="relative z-10">
               {[
                 {
                   company: "Vietnam AI Software Solutions",
@@ -638,6 +654,7 @@ export default function App() {
                   period={item.period}
                   duration={item.duration}
                   description={item.description}
+                  index={idx}
                 />
               ))}
             </div>
