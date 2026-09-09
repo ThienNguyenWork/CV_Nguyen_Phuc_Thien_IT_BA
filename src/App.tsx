@@ -830,7 +830,7 @@ export default function App() {
                         <motion.a whileHover={{ scale: 1.05, x: 5 }} href="https://www.linkedin.com/in/phucthien432002/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1">
                           <Linkedin className="w-4 h-4" /> LinkedIn
                         </motion.a>
-                        <motion.a whileHover={{ scale: 1.05, x: 5 }} href="https://github.com/phucthien432002" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1">
+                        <motion.a whileHover={{ scale: 1.05, x: 5 }} href="https://github.com/ThienNguyenWork" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1">
                           <Github className="w-4 h-4" /> GitHub
                         </motion.a>
                       </div>
