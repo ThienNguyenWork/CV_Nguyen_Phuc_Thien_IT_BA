@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import OrbitalEcosystem from '../OrbitalEcosystem';
 
-export const EcosystemSection: React.FC = () => {
+export const EcosystemSection: React.FC = React.memo(() => {
   return (
     <section className="mb-48 py-60 bg-[#020202] relative overflow-hidden w-full [content-visibility:auto] [contain-intrinsic-size:1000px]">
       {/* Advanced Cosmic Background */}
@@ -85,6 +85,7 @@ export const EcosystemSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
+EcosystemSection.displayName = 'EcosystemSection';
 export default EcosystemSection;

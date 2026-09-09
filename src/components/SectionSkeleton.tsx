@@ -5,7 +5,7 @@ interface SectionSkeletonProps {
   className?: string;
 }
 
-export const SectionSkeleton: React.FC<SectionSkeletonProps> = ({ 
+export const SectionSkeleton: React.FC<SectionSkeletonProps> = React.memo(({ 
   height = "min-h-[400px]", 
   className = "" 
 }) => {
@@ -19,6 +19,8 @@ export const SectionSkeleton: React.FC<SectionSkeletonProps> = ({
       <div className="w-full max-w-2xl h-24 bg-white/5 rounded-2xl border border-white/5" />
     </div>
   );
-};
+});
+
+SectionSkeleton.displayName = 'SectionSkeleton';
 
 export default SectionSkeleton;

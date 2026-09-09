@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Linkedin, Github, Mail, Phone } from 'lucide-react';
 
-export const ContactSection: React.FC = () => {
+export const ContactSection: React.FC = React.memo(() => {
   return (
     <footer id="contact" className="pt-20 border-t border-white/5 scroll-mt-32 max-w-6xl mx-auto px-8">
       <div className="flex flex-col md:flex-row justify-between items-center gap-12">
@@ -73,6 +73,7 @@ export const ContactSection: React.FC = () => {
       </motion.div>
     </footer>
   );
-};
+});
 
+ContactSection.displayName = 'ContactSection';
 export default ContactSection;

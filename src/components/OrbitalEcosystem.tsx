@@ -286,4 +286,4 @@ const OrbitalEcosystem = () => {
   );
 };
 
-export default OrbitalEcosystem;
+export default React.memo(OrbitalEcosystem);

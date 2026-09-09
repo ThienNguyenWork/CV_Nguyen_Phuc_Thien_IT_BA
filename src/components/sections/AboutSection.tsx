@@ -7,7 +7,7 @@ const portraits = [
   { webp: "/images/about-3.webp", jpg: "/images/about-3.jpg", rotate: -3 }
 ];
 
-export const AboutSection: React.FC = () => {
+export const AboutSection: React.FC = React.memo(() => {
   return (
     <section id="about" className="mb-48 scroll-mt-32 max-w-6xl mx-auto px-8">
       <div className="relative">
@@ -81,6 +81,7 @@ export const AboutSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
+AboutSection.displayName = 'AboutSection';
 export default AboutSection;

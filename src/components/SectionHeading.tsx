@@ -6,7 +6,7 @@ interface SectionHeadingProps {
   subtitle?: string;
 }
 
-export const SectionHeading: React.FC<SectionHeadingProps> = ({ title, subtitle }) => (
+export const SectionHeading: React.FC<SectionHeadingProps> = React.memo(({ title, subtitle }) => (
   <div className="mb-12">
     <motion.div 
       initial={{ opacity: 0, x: -20 }}
@@ -39,6 +39,8 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({ title, subtitle 
       </span>
     </motion.h2>
   </div>
-);
+));
+
+SectionHeading.displayName = 'SectionHeading';
 
 export default SectionHeading;

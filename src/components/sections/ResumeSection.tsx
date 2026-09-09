@@ -17,7 +17,7 @@ const coreCompetencies = [
   "BRD / FRD Documentation", "SQL & Data Analysis", "Presales & Client Engagement"
 ];
 
-export const ResumeSection: React.FC = () => {
+export const ResumeSection: React.FC = React.memo(() => {
   return (
     <section id="resume" className="mb-48 scroll-mt-32 max-w-6xl mx-auto px-8">
       <div className="max-w-5xl mx-auto">
@@ -227,6 +227,7 @@ export const ResumeSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
+ResumeSection.displayName = 'ResumeSection';
 export default ResumeSection;

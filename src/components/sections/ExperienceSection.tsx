@@ -88,7 +88,7 @@ const ExperienceTimelineItem: React.FC<{
   duration: string; 
   description: string[];
   index: number;
-}> = ({ 
+}> = React.memo(({ 
   company, 
   role, 
   period, 
@@ -133,9 +133,11 @@ const ExperienceTimelineItem: React.FC<{
       <div className="hidden md:block w-[45%]" />
     </div>
   );
-};
+});
 
-export const ExperienceSection: React.FC = () => {
+ExperienceTimelineItem.displayName = 'ExperienceTimelineItem';
+
+export const ExperienceSection: React.FC = React.memo(() => {
   return (
     <section id="work" className="mb-48 scroll-mt-32 max-w-6xl mx-auto px-8">
       <motion.div 
@@ -169,6 +171,7 @@ export const ExperienceSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
+ExperienceSection.displayName = 'ExperienceSection';
 export default ExperienceSection;
