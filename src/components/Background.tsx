@@ -15,10 +15,10 @@ export const Background: React.FC = React.memo(() => {
       {/* Grid Pattern */}
       <div className="absolute inset-0 bg-grid opacity-30" />
       
-      {/* Dynamic Spotlight */}
+      {/* Dynamic Spotlight - Hardware-accelerated GPU layer */}
       <div 
         ref={spotlightRef}
-        className="absolute inset-0 transition-opacity duration-300"
+        className="fixed top-0 left-0 rounded-full pointer-events-none transition-opacity duration-300"
       />
 
       {/* Subtle Ambient Blobs */}

@@ -35,11 +35,10 @@ export const ResumeSection: React.FC = React.memo(() => {
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.98 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          whileHover={{ y: -6 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           viewport={{ once: false, amount: 0.1 }}
         >
-          <SpotlightCard className="p-2 md:p-12 bg-[#0a0a0a] border border-white/5">
+          <SpotlightCard className="p-2 md:p-12 bg-[#0a0a0a] border border-white/5 hover:border-white/10 transition-[border-color] duration-300">
             <div className="mb-4 md:hidden text-center">
               <p className="text-[10px] font-mono text-blue-500 animate-pulse">Scroll horizontally to view full resume</p>
             </div>
@@ -48,9 +47,9 @@ export const ResumeSection: React.FC = React.memo(() => {
               <div className="p-6 md:p-16 min-w-[800px] md:min-w-0 max-w-4xl mx-auto font-serif leading-relaxed">
                 {/* Header */}
                 <header className="border-b-2 border-blue-600 pb-8 mb-10 flex flex-col md:flex-row items-center gap-8">
-                  <motion.div 
-                    whileHover={{ scale: 1.05 }}
-                    className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-blue-600 flex-shrink-0 shadow-xl"
+                  <div 
+                    className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-blue-600 flex-shrink-0 shadow-xl hover:scale-105 transition-transform duration-300"
+                    style={{ willChange: 'transform' }}
                   >
                     <picture className="w-full h-full block">
                       <source srcSet="/images/hero-avatar.webp" type="image/webp" />
@@ -64,28 +63,28 @@ export const ResumeSection: React.FC = React.memo(() => {
                         decoding="async"
                       />
                     </picture>
-                  </motion.div>
+                  </div>
                   <div className="flex-grow text-center md:text-left">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-2">NGUYỄN PHÚC THIÊN</h1>
                     <p className="text-xl md:text-2xl text-blue-600 font-medium uppercase tracking-widest mb-4">Business Analyst</p>
                     <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 text-sm text-gray-600">
-                      <motion.div whileHover={{ scale: 1.05, x: 5 }} className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 hover:text-blue-600 transition-colors duration-150 cursor-pointer">
                         <Mail className="w-4 h-4 text-blue-600" /> phucthien432002@gmail.com
-                      </motion.div>
-                      <motion.div whileHover={{ scale: 1.05, x: 5 }} className="flex items-center gap-2">
+                      </div>
+                      <div className="flex items-center gap-2 hover:text-blue-600 transition-colors duration-150 cursor-pointer">
                         <Phone className="w-4 h-4 text-blue-600" /> 0903 716 806
-                      </motion.div>
-                      <motion.div whileHover={{ scale: 1.05, x: 5 }} className="flex items-center gap-2">
+                      </div>
+                      <div className="flex items-center gap-2 hover:text-blue-600 transition-colors duration-150 cursor-pointer">
                         <MapPin className="w-4 h-4 text-blue-600" /> Ho Chi Minh City
-                      </motion.div>
+                      </div>
                     </div>
                     <div className="mt-4 flex justify-center md:justify-start gap-4">
-                      <motion.a whileHover={{ scale: 1.05, x: 5 }} href="https://www.linkedin.com/in/phucthien432002/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1">
+                      <a href="https://www.linkedin.com/in/phucthien432002/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1 hover:translate-x-1 transition-transform duration-150">
                         <Linkedin className="w-4 h-4" /> LinkedIn
-                      </motion.a>
-                      <motion.a whileHover={{ scale: 1.05, x: 5 }} href="https://github.com/ThienNguyenWork" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1">
+                      </a>
+                      <a href="https://github.com/ThienNguyenWork" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1 hover:translate-x-1 transition-transform duration-150">
                         <Github className="w-4 h-4" /> GitHub
-                      </motion.a>
+                      </a>
                     </div>
                   </div>
                 </header>
@@ -215,9 +214,9 @@ export const ResumeSection: React.FC = React.memo(() => {
                 href="https://drive.google.com/file/d/1zAsW3SrDmUKUZwW8Zx678nl0KfoarkR3/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -5 }}
+                whileHover={{ scale: 1.06, y: -4 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-white text-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-blue-500 hover:text-white transition-all flex items-center gap-3 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(59,130,246,0.4)]"
+                className="px-8 py-4 bg-white text-black rounded-full font-bold uppercase tracking-widest text-xs hover:bg-blue-500 hover:text-white transition-[background-color,color,box-shadow] duration-200 flex items-center gap-3 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(59,130,246,0.4)]"
               >
                 <FileText className="w-4 h-4" /> Download Resume (PDF)
               </motion.a>

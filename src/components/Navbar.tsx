@@ -28,10 +28,10 @@ export const Navbar: React.FC<NavbarProps> = React.memo(({
           className="flex items-center gap-3 cursor-pointer group"
           onClick={onScrollToTop}
         >
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-sm text-white group-hover:shadow-[0_0_15px_rgba(37,99,235,0.6)] transition-all">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-sm text-white group-hover:shadow-[0_0_15px_rgba(37,99,235,0.6)] transition-[box-shadow] duration-200">
             T
           </div>
-          <span className="font-mono text-xs tracking-widest font-bold uppercase hidden sm:block group-hover:text-blue-400 transition-colors">
+          <span className="font-mono text-xs tracking-widest font-bold uppercase hidden sm:block group-hover:text-blue-400 transition-colors duration-200">
             PHUC THIEN
           </span>
         </motion.div>
@@ -45,13 +45,13 @@ export const Navbar: React.FC<NavbarProps> = React.memo(({
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => onNavigate(id)} 
-                className={`relative text-[10px] md:text-xs font-mono uppercase tracking-widest transition-colors group ${
+                className={`relative text-[10px] md:text-xs font-mono uppercase tracking-widest transition-colors duration-200 group ${
                   isActive ? 'text-blue-400 font-semibold' : 'text-gray-400 hover:text-white'
                 }`}
               >
                 {label}
                 <span 
-                  className={`absolute -bottom-1 left-0 h-px bg-blue-500 transition-all duration-300 ${
+                  className={`absolute -bottom-1 left-0 h-px bg-blue-500 transition-[width] duration-300 ${
                     isActive ? 'w-full' : 'w-0 group-hover:w-full'
                   }`} 
                 />
@@ -63,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = React.memo(({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => onNavigate('contact')} 
-            className="px-4 md:px-5 py-2 bg-white text-black text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-full hover:bg-blue-500 hover:text-white transition-all shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]"
+            className="px-4 md:px-5 py-2 bg-white text-black text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-full hover:bg-blue-500 hover:text-white transition-[background-color,color,box-shadow] duration-200 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]"
           >
             Contact
           </motion.button>

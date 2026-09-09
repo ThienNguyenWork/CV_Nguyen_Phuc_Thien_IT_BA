@@ -110,10 +110,10 @@ const ExperienceTimelineItem: React.FC<{
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="w-full md:w-[45%] pl-12 md:pl-0"
       >
-        <SpotlightCard className="p-6 bg-[#0a0a0a] border border-white/5 hover:border-blue-500/30 transition-all group">
+        <SpotlightCard className="p-6 bg-[#0a0a0a] border border-white/5 hover:border-blue-500/30 transition-[border-color] duration-200 group">
           <div className="flex flex-col mb-4">
             <span className="text-[10px] font-mono text-blue-500 uppercase tracking-[0.2em] mb-2">{period}</span>
-            <h3 className="text-xl font-bold text-white leading-tight group-hover:text-blue-400 transition-colors">{role}</h3>
+            <h3 className="text-xl font-bold text-white leading-tight group-hover:text-blue-400 transition-colors duration-200">{role}</h3>
             <p className="text-gray-400 font-medium text-sm mt-1">{company} • <span className="text-gray-500 italic">{duration}</span></p>
           </div>
           <ul className="space-y-3">

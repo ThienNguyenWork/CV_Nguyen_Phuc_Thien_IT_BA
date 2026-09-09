@@ -43,7 +43,7 @@ export const HeroSection: React.FC<HeroSectionProps> = React.memo(({ onNavigate 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => onNavigate('work')}
-                className="group px-8 py-4 bg-blue-600 rounded-2xl font-bold flex items-center gap-3 hover:bg-blue-700 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] relative overflow-hidden"
+                className="group px-8 py-4 bg-blue-600 rounded-2xl font-bold flex items-center gap-3 hover:bg-blue-700 transition-[background-color,box-shadow] duration-200 shadow-[0_0_20px_rgba(37,99,235,0.3)] relative overflow-hidden"
               >
                 <span className="relative z-10 flex items-center gap-3">
                   View Experience <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -99,8 +99,10 @@ export const HeroSection: React.FC<HeroSectionProps> = React.memo(({ onNavigate 
                 alt="Nguyễn Phúc Thiên" 
                 width={320}
                 height={320}
-                className="w-full h-full object-cover transition-all duration-700 scale-110 group-hover:scale-100"
-                whileHover={{ rotate: -2, scale: 1.05 }}
+                className="w-full h-full object-cover scale-105"
+                whileHover={{ rotate: -2, scale: 1.08 }}
+                transition={{ duration: 0.3 }}
+                style={{ willChange: 'transform' }}
                 loading="eager"
                 decoding="async"
                 fetchPriority="high"

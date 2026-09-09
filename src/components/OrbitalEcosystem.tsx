@@ -114,7 +114,7 @@ const SystemNexus: React.FC<{ isInView: boolean }> = React.memo(({ isInView }) =
       />
       
       {/* The Nexus Sphere */}
-      <div className="relative w-32 h-32 md:w-80 md:h-80 rounded-full bg-black border border-blue-500/40 flex flex-col items-center justify-center overflow-hidden shadow-[0_0_50px_rgba(37,99,235,0.3)]">
+      <div className="relative w-32 h-32 md:w-80 md:h-80 rounded-full bg-black border border-blue-500/40 flex flex-col items-center justify-center overflow-hidden shadow-[0_0_50px_rgba(37,99,235,0.3)] hover:border-blue-500/70 hover:shadow-[0_0_60px_rgba(37,99,235,0.45)] transition-[border-color,box-shadow] duration-300 cursor-pointer">
         {/* Internal Data Stream Animation - Hardware GPU Composited translateY */}
         <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
           {[...Array(5)].map((_, i) => (
@@ -133,6 +133,7 @@ const SystemNexus: React.FC<{ isInView: boolean }> = React.memo(({ isInView }) =
 
         <div className="relative z-10 flex flex-col items-center text-center p-8 select-none">
           <div
+            className="relative"
             style={{
               animation: 'nexus-cpu-spin 10s linear infinite',
               animationPlayState: isInView ? 'running' : 'paused',
@@ -140,7 +141,11 @@ const SystemNexus: React.FC<{ isInView: boolean }> = React.memo(({ isInView }) =
               willChange: 'transform',
             }}
           >
-            <Cpu className="w-8 h-8 md:w-24 md:h-24 text-white mb-6 drop-shadow-[0_0_12px_rgba(59,130,246,0.6)]" />
+            <div 
+              className="absolute inset-0 bg-blue-500/20 rounded-full blur-md -z-10 pointer-events-none" 
+              style={{ willChange: 'transform' }}
+            />
+            <Cpu className="w-8 h-8 md:w-24 md:h-24 text-white mb-6" />
           </div>
           
           <h3 className="text-xs md:text-3xl font-black text-white uppercase tracking-[0.5em] mb-2">
@@ -219,16 +224,22 @@ const OrbitingSkillModule: React.FC<OrbitingSkillModuleProps> = React.memo(({
             {/* Counter-rotation static offset */}
             <div style={{ transform: `rotate(${-startAngle}deg)` }}>
               <motion.div
-                whileHover={{ 
-                  scale: 1.08, 
-                  translateZ: 80,
-                  boxShadow: `0 0 30px ${skill.color}40`
-                }}
-                transition={{ duration: 0.2 }}
+                whileHover={{ scale: 1.08 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
                 className="relative group cursor-pointer"
+                style={{ willChange: 'transform' }}
               >
+                {/* Hardware-accelerated ambient glow on hover */}
+                <div
+                  className="absolute -inset-1 rounded-[2.2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(circle, ${skill.color}50 0%, transparent 70%)`,
+                    willChange: 'opacity',
+                  }}
+                />
+
                 {/* Holographic Module UI */}
-                <div className="bg-[#050914]/90 border border-white/10 p-4 md:p-8 rounded-[2rem] flex flex-col items-center gap-4 md:gap-6 min-w-[120px] md:min-w-[300px] transition-all duration-300 group-hover:border-blue-500/50 shadow-xl overflow-hidden backdrop-blur-sm">
+                <div className="relative bg-[#050914] border border-white/10 p-4 md:p-8 rounded-[2rem] flex flex-col items-center gap-4 md:gap-6 min-w-[120px] md:min-w-[300px] transition-[border-color] duration-200 group-hover:border-blue-500/50 shadow-xl overflow-hidden">
                   
                   {/* Module Header */}
                   <div className="w-full flex justify-between items-center mb-2 px-2">
@@ -241,31 +252,40 @@ const OrbitingSkillModule: React.FC<OrbitingSkillModuleProps> = React.memo(({
 
                   {/* Icon with Energy Ring */}
                   <div className="relative">
-                    <div className="absolute inset-0 bg-blue-500 blur-xl opacity-0 group-hover:opacity-30 transition-opacity" />
-                    <div className="relative p-3 md:p-6 rounded-2xl md:rounded-3xl bg-white/5 border border-white/10 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                    <div 
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                      style={{
+                        background: 'radial-gradient(circle, rgba(59,130,246,0.35) 0%, transparent 70%)',
+                        willChange: 'opacity',
+                      }}
+                    />
+                    <div className="relative p-3 md:p-6 rounded-2xl md:rounded-3xl bg-white/5 border border-white/10 group-hover:bg-blue-600 group-hover:text-white transition-[background-color,border-color,color] duration-200">
                       <skill.icon className="w-5 h-5 md:w-10 md:h-10 text-blue-400 group-hover:text-white" />
                     </div>
                   </div>
 
                   {/* Module Content */}
                   <div className="text-center">
-                    <h4 className="text-[10px] md:text-lg font-black uppercase tracking-[0.2em] text-white mb-2 group-hover:text-blue-400 transition-colors">
+                    <h4 className="text-[10px] md:text-lg font-black uppercase tracking-[0.2em] text-white mb-2 group-hover:text-blue-400 transition-colors duration-200">
                       {skill.name}
                     </h4>
                     <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mb-3" />
-                    <p className="hidden md:block text-[10px] md:text-xs text-gray-500 font-light leading-relaxed max-w-[220px] opacity-60 group-hover:opacity-100 transition-opacity">
+                    <p className="hidden md:block text-[10px] md:text-xs text-gray-500 font-light leading-relaxed max-w-[220px] opacity-60 group-hover:opacity-100 transition-opacity duration-200">
                       {skill.description}
                     </p>
                   </div>
 
                   {/* Technical UI Accents */}
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                   <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-white/20 rounded-tl-lg" />
                   <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-white/20 rounded-br-lg" />
                 </div>
 
                 {/* Data Line to Center */}
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-px h-[150px] bg-gradient-to-b from-blue-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                <div 
+                  className="absolute top-full left-1/2 -translate-x-1/2 w-px h-[150px] bg-gradient-to-b from-blue-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                  style={{ willChange: 'opacity' }}
+                />
               </motion.div>
             </div>
           </div>

@@ -15,7 +15,6 @@ export function useSmoothCursor({
   offset = 16
 }: UseSmoothCursorOptions = {}) {
   const followerRef = useRef<HTMLDivElement>(null);
-  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     let rafId: number;
@@ -23,6 +22,9 @@ export function useSmoothCursor({
     let targetY = -100;
     let currentX = -100;
     let currentY = -100;
+    let targetScale = 1;
+    let currentScale = 1;
+    let isHovering = false;
 
     const handleMouseMove = (e: MouseEvent) => {
       targetX = e.clientX - offset;
@@ -32,9 +34,10 @@ export function useSmoothCursor({
     const updateLoop = () => {
       currentX += (targetX - currentX) * lerp;
       currentY += (targetY - currentY) * lerp;
+      currentScale += (targetScale - currentScale) * 0.2;
 
       if (followerRef.current) {
-        followerRef.current.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+        followerRef.current.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(${currentScale})`;
       }
 
       rafId = requestAnimationFrame(updateLoop);
@@ -44,8 +47,20 @@ export function useSmoothCursor({
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
-      const hover = Boolean(target?.closest('button, a, .cursor-pointer, input, textarea'));
-      setIsHovering(prev => (prev !== hover ? hover : prev));
+      const hover = Boolean(target?.closest('button, a, .cursor-pointer, input, textarea, [role="button"]'));
+      if (hover !== isHovering) {
+        isHovering = hover;
+        targetScale = hover ? 1.5 : 1.0;
+        if (followerRef.current) {
+          if (hover) {
+            followerRef.current.classList.add('bg-blue-500/10');
+            followerRef.current.classList.remove('bg-transparent');
+          } else {
+            followerRef.current.classList.remove('bg-blue-500/10');
+            followerRef.current.classList.add('bg-transparent');
+          }
+        }
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
@@ -58,7 +73,7 @@ export function useSmoothCursor({
     };
   }, [lerp, offset]);
 
-  return { followerRef, isHovering };
+  return { followerRef };
 }
 
 export default useSmoothCursor;
