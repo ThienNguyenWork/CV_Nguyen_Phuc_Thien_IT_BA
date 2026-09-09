@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { lazy } from 'react';
 import { motion } from 'motion/react';
 import ClickSpark from './components/ClickSpark';
 import Background from './components/Background';
@@ -6,10 +6,11 @@ import ScrollProgress from './components/ScrollProgress';
 import MouseFollower from './components/MouseFollower';
 import Navbar from './components/Navbar';
 import HeroSection from './components/sections/HeroSection';
-import SectionSkeleton from './components/SectionSkeleton';
+import LazySection from './components/LazySection';
 
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { useActiveSection } from './hooks/useActiveSection';
+import { useSectionVisibility } from './hooks/useSectionVisibility';
 
 // Code-split all major below-the-fold sections via React.lazy
 const AboutSection = lazy(() => import('./components/sections/AboutSection'));
@@ -19,11 +20,17 @@ const TechnicalSkillsSection = lazy(() => import('./components/sections/Technica
 const ResumeSection = lazy(() => import('./components/sections/ResumeSection'));
 const ContactSection = lazy(() => import('./components/sections/ContactSection'));
 
-const SECTION_IDS = ['about', 'work', 'resume', 'contact'];
+const NAVBAR_SECTION_IDS = ['about', 'work', 'resume', 'contact'];
+const ALL_SECTION_IDS = ['about', 'ecosystem', 'work', 'skills', 'resume', 'contact'] as const;
 
 export default function App() {
   const { scrollToSection, scrollToTop } = useSmoothScroll(80);
-  const activeSection = useActiveSection(SECTION_IDS);
+  const activeSection = useActiveSection(NAVBAR_SECTION_IDS);
+  const {
+    isNearViewport,
+    hasEnteredViewport,
+    registerSection
+  } = useSectionVisibility(ALL_SECTION_IDS, { rootMargin: '350px 0px' });
 
   return (
     <div className="min-h-screen bg-[#030303] text-white selection:bg-blue-500/30 selection:text-white overflow-x-hidden">
@@ -53,30 +60,60 @@ export default function App() {
             {/* Hero Section - Rendered immediately for optimal FCP / LCP */}
             <HeroSection onNavigate={scrollToSection} />
 
-            {/* Below-the-fold major sections dynamically loaded with React.lazy and Suspense */}
-            <Suspense fallback={<SectionSkeleton height="min-h-[500px]" />}>
+            {/* Below-the-fold major sections dynamically loaded only when approaching viewport */}
+            <LazySection
+              id="about"
+              minHeight="min-h-[500px]"
+              hasEntered={hasEnteredViewport('about')}
+              registerRef={registerSection('about')}
+            >
               <AboutSection />
-            </Suspense>
+            </LazySection>
 
-            <Suspense fallback={<SectionSkeleton height="min-h-[800px]" />}>
-              <EcosystemSection />
-            </Suspense>
+            <LazySection
+              id="ecosystem"
+              minHeight="min-h-[800px]"
+              hasEntered={hasEnteredViewport('ecosystem')}
+              registerRef={registerSection('ecosystem')}
+            >
+              <EcosystemSection isVisible={isNearViewport('ecosystem')} />
+            </LazySection>
 
-            <Suspense fallback={<SectionSkeleton height="min-h-[700px]" />}>
+            <LazySection
+              id="work"
+              minHeight="min-h-[700px]"
+              hasEntered={hasEnteredViewport('work')}
+              registerRef={registerSection('work')}
+            >
               <ExperienceSection />
-            </Suspense>
+            </LazySection>
 
-            <Suspense fallback={<SectionSkeleton height="min-h-[400px]" />}>
+            <LazySection
+              id="skills"
+              minHeight="min-h-[400px]"
+              hasEntered={hasEnteredViewport('skills')}
+              registerRef={registerSection('skills')}
+            >
               <TechnicalSkillsSection />
-            </Suspense>
+            </LazySection>
 
-            <Suspense fallback={<SectionSkeleton height="min-h-[900px]" />}>
+            <LazySection
+              id="resume"
+              minHeight="min-h-[900px]"
+              hasEntered={hasEnteredViewport('resume')}
+              registerRef={registerSection('resume')}
+            >
               <ResumeSection />
-            </Suspense>
+            </LazySection>
 
-            <Suspense fallback={<SectionSkeleton height="min-h-[250px]" />}>
+            <LazySection
+              id="contact"
+              minHeight="min-h-[250px]"
+              hasEntered={hasEnteredViewport('contact')}
+              registerRef={registerSection('contact')}
+            >
               <ContactSection />
-            </Suspense>
+            </LazySection>
           </motion.div>
         </main>
       </ClickSpark>

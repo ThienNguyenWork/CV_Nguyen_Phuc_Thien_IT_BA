@@ -2,33 +2,39 @@ import React from 'react';
 import { motion } from 'motion/react';
 import OrbitalEcosystem from '../OrbitalEcosystem';
 
-export const EcosystemSection: React.FC = React.memo(() => {
+interface EcosystemSectionProps {
+  isVisible?: boolean;
+}
+
+export const EcosystemSection: React.FC<EcosystemSectionProps> = React.memo(({ isVisible = true }) => {
   return (
     <section className="mb-48 py-60 bg-[#020202] relative overflow-hidden w-full [content-visibility:auto] [contain-intrinsic-size:1000px]">
-      {/* Advanced Cosmic Background */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.1),transparent_70%)]" />
+      {/* Advanced Cosmic Background - Hardware-accelerated radial glows */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.08),transparent_70%)]" />
         
-        {/* Moving Nebulae - Optimized with lower blur and opacity */}
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.1, 1],
-            opacity: [0.1, 0.2, 0.1],
+        {/* Moving Nebulae - Hardware-composited radial pulses, paused when offscreen */}
+        <div 
+          className="absolute -top-1/4 -left-1/4 w-full h-full rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 65%)',
+            animation: 'nebula-pulse-1 15s linear infinite',
+            animationPlayState: isVisible ? 'running' : 'paused',
+            willChange: 'transform, opacity',
           }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-1/4 -left-1/4 w-full h-full bg-blue-600/10 blur-[100px] rounded-full"
         />
-        <motion.div 
-          animate={{ 
-            scale: [1.1, 1, 1.1],
-            opacity: [0.1, 0.15, 0.1],
+        <div 
+          className="absolute -bottom-1/4 -right-1/4 w-full h-full rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.1) 0%, transparent 65%)',
+            animation: 'nebula-pulse-2 20s linear infinite',
+            animationPlayState: isVisible ? 'running' : 'paused',
+            willChange: 'transform, opacity',
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-1/4 -right-1/4 w-full h-full bg-purple-600/10 blur-[100px] rounded-full"
         />
       </div>
       
-      <div className="absolute inset-0 bg-grid opacity-[0.05]" />
+      <div className="absolute inset-0 bg-grid opacity-[0.05] pointer-events-none" />
       
       {/* Technical UI Overlays */}
       <div className="absolute top-20 left-20 pointer-events-none hidden xl:block">
@@ -55,14 +61,14 @@ export const EcosystemSection: React.FC = React.memo(() => {
       
       <div className="relative z-10 w-full">
         <motion.div 
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-40 px-4"
         >
           <h2 className="text-7xl md:text-[12rem] font-black tracking-tighter text-white mb-12 leading-none">
-            SKILLS <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 via-blue-600 to-indigo-900 drop-shadow-[0_0_50px_rgba(37,99,235,0.4)]">ECOSYSTEM</span>
+            SKILLS <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 via-blue-600 to-indigo-900 drop-shadow-[0_0_25px_rgba(37,99,235,0.35)]">ECOSYSTEM</span>
           </h2>
           <div className="flex flex-col items-center gap-8">
             <div className="flex items-center justify-center gap-8">
@@ -80,7 +86,7 @@ export const EcosystemSection: React.FC = React.memo(() => {
         </motion.div>
         
         <div className="relative w-full overflow-visible">
-          <OrbitalEcosystem />
+          <OrbitalEcosystem isVisible={isVisible} />
         </div>
       </div>
     </section>

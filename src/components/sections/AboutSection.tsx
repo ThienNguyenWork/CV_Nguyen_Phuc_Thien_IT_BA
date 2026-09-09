@@ -9,7 +9,7 @@ const portraits = [
 
 export const AboutSection: React.FC = React.memo(() => {
   return (
-    <section id="about" className="mb-48 scroll-mt-32 max-w-6xl mx-auto px-8">
+    <section className="mb-48 max-w-6xl mx-auto px-8">
       <div className="relative">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}

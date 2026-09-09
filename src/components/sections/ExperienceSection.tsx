@@ -139,7 +139,7 @@ ExperienceTimelineItem.displayName = 'ExperienceTimelineItem';
 
 export const ExperienceSection: React.FC = React.memo(() => {
   return (
-    <section id="work" className="mb-48 scroll-mt-32 max-w-6xl mx-auto px-8">
+    <section className="mb-48 max-w-6xl mx-auto px-8">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

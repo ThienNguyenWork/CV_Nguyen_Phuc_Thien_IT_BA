@@ -4,7 +4,7 @@ import { Linkedin, Github, Mail, Phone } from 'lucide-react';
 
 export const ContactSection: React.FC = React.memo(() => {
   return (
-    <footer id="contact" className="pt-20 border-t border-white/5 scroll-mt-32 max-w-6xl mx-auto px-8">
+    <footer className="pt-20 border-t border-white/5 max-w-6xl mx-auto px-8">
       <div className="flex flex-col md:flex-row justify-between items-center gap-12">
         <div className="flex flex-col items-center md:items-start gap-4">
           <motion.div 
