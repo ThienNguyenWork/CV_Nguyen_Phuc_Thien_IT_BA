@@ -98,16 +98,11 @@ const Background = React.memo(() => {
 
 const ScrollProgress = React.memo(() => {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
 
   return (
     <motion.div 
       className="fixed top-0 left-0 right-0 h-1 bg-blue-600 origin-left z-[100]"
-      style={{ scaleX }}
+      style={{ scaleX: scrollYProgress, willChange: 'transform' }}
     />
   );
 });
@@ -169,13 +164,15 @@ const BentoGrid = ({ children }: { children: React.ReactNode }) => (
   <motion.div 
     initial="hidden"
     whileInView="show"
-    viewport={{ once: true, margin: "-100px" }}
+    viewport={{ once: false, amount: 0.15 }}
     variants={{
-      hidden: { opacity: 0 },
+      hidden: { opacity: 0, y: 30 },
       show: {
         opacity: 1,
+        y: 0,
         transition: {
-          staggerChildren: 0.1
+          staggerChildren: 0.08,
+          duration: 0.5
         }
       }
     }}
@@ -226,13 +223,15 @@ const SectionHeading = ({ title, subtitle }: { title: string, subtitle?: string 
     <motion.div 
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
+      viewport={{ once: false, amount: 0.3 }}
+      transition={{ duration: 0.5 }}
       className="flex items-center gap-4 mb-4"
     >
       <motion.div 
         initial={{ width: 0 }}
         whileInView={{ width: 48 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="h-px bg-blue-500" 
       />
       <span className="text-xs font-mono uppercase tracking-[0.3em] text-blue-500">{subtitle || "Section"}</span>
@@ -240,8 +239,8 @@ const SectionHeading = ({ title, subtitle }: { title: string, subtitle?: string 
     <motion.h2 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      viewport={{ once: true }}
+      viewport={{ once: false, amount: 0.3 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
       className="text-4xl md:text-5xl font-bold tracking-tight text-white group"
     >
       <span className="relative inline-block">
@@ -277,10 +276,10 @@ const ExperienceTimelineItem: React.FC<{
       <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-white/10 -translate-x-1/2 md:hidden" />
       
       <motion.div 
-        initial={{ opacity: 0, x: isEven ? 50 : -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: index * 0.1 }}
+        initial={{ opacity: 0, x: isEven ? 50 : -50, scale: 0.96 }}
+        whileInView={{ opacity: 1, x: 0, scale: 1 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
         className="w-full md:w-[45%] pl-12 md:pl-0"
       >
         <SpotlightCard className="p-6 bg-[#0a0a0a] border border-white/5 hover:border-blue-500/30 transition-all group">
@@ -309,14 +308,6 @@ const ExperienceTimelineItem: React.FC<{
 };
 
 export default function App() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -325,7 +316,7 @@ export default function App() {
   };
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-[#030303] text-white selection:bg-blue-500/30 selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#030303] text-white selection:bg-blue-500/30 selection:text-white overflow-x-hidden">
       <ClickSpark
         sparkColor='#3b82f6'
         sparkSize={10}
@@ -484,6 +475,8 @@ export default function App() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.5 }}
               className="flex items-start gap-4 mb-8"
             >
               <div className="w-2 h-12 bg-blue-600 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.5)]" />
@@ -497,7 +490,8 @@ export default function App() {
               <motion.div 
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
               >
                 <p className="text-xl md:text-2xl text-gray-400 leading-relaxed mb-8">
                   As an <span className="text-white font-medium">IT Business Analyst</span>, I thrive at the intersection of business strategy and software engineering. My mission is to translate complex business needs into clear, actionable technical specifications.
@@ -526,9 +520,10 @@ export default function App() {
                 ].map((item, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, scale: 0.8, rotate: item.rotate }}
+                    initial={{ opacity: 0, scale: 0.85, rotate: item.rotate }}
                     whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                    transition={{ delay: i * 0.1 }}
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
                     className="w-40 h-56 md:w-48 md:h-64 rounded-2xl overflow-hidden border border-white/10 bg-white/5 shadow-2xl relative group"
                   >
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -601,7 +596,8 @@ export default function App() {
             <motion.div 
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.6 }}
               className="text-center mb-40 px-4"
             >
               <h2 className="text-7xl md:text-[12rem] font-black tracking-tighter text-white mb-12 leading-none">
@@ -630,10 +626,16 @@ export default function App() {
 
         {/* Experience Section (Work) */}
         <section id="work" className="mb-48 scroll-mt-32 max-w-6xl mx-auto px-8">
-          <div className="text-center mb-20">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-20"
+          >
             <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-blue-500 mb-4 block">What I have done so far</span>
             <h2 className="text-5xl md:text-7xl font-black tracking-tight text-white">Work Experience.</h2>
-          </div>
+          </motion.div>
           
           <div className="relative max-w-6xl mx-auto px-4">
             {/* Vertical Tree Line */}
@@ -727,7 +729,13 @@ export default function App() {
         {/* Technical Skills - Bento Style */}
         <section className="mb-48 max-w-6xl mx-auto px-8">
           <SectionHeading title="Technical Skills" subtitle="Stack" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.5 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
             <SpotlightCard className="p-8">
               <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
                 <Layout className="w-5 h-5 text-blue-500" /> BA Tools
@@ -760,23 +768,29 @@ export default function App() {
                 ))}
               </div>
             </SpotlightCard>
-          </div>
+          </motion.div>
         </section>
 
         {/* Resume Section */}
         <section id="resume" className="mb-48 scroll-mt-32 max-w-6xl mx-auto px-8">
           <div className="max-w-5xl mx-auto">
-            <div className="mb-12">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.5 }}
+              className="mb-12"
+            >
               <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-blue-500 mb-4 block">My Professional Journey</span>
               <h2 className="text-5xl md:text-7xl font-black tracking-tight text-white">Resume.</h2>
-            </div>
+            </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ y: -10 }}
-              transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, y: 40, scale: 0.98 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              whileHover={{ y: -6 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              viewport={{ once: false, amount: 0.1 }}
             >
               <SpotlightCard className="p-2 md:p-12 bg-[#0a0a0a] border border-white/5">
                 <div className="mb-4 md:hidden text-center">

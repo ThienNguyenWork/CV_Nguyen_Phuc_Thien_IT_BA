@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useInView } from 'motion/react';
 import { 
   Search, 
   PenTool, 
@@ -63,16 +63,21 @@ const OrbitalEcosystem = () => {
     return baseRadius * scale;
   };
 
+  const isInView = useInView(containerRef, { margin: "100px", once: false });
+
   return (
     <div 
       ref={containerRef}
-      className="relative w-full min-h-[600px] md:min-h-[1000px] flex items-center justify-center overflow-visible perspective-[2000px]"
+      className={`relative w-full min-h-[600px] md:min-h-[1000px] flex items-center justify-center overflow-visible perspective-[2000px] transition-all duration-700 ${
+        isInView ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-12 pointer-events-none"
+      }`}
     >
-      {/* 3D Stage Wrapper */}
-      <motion.div 
-        style={{ rotateX, rotateZ }}
-        className="relative w-full h-full flex items-center justify-center transform-style-3d"
-      >
+      {/* 3D Stage Wrapper - Only active when in viewport */}
+      {isInView && (
+        <motion.div 
+          style={{ rotateX, rotateZ }}
+          className="relative w-full h-full flex items-center justify-center transform-style-3d"
+        >
         {/* Holographic Grid Floor */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] bg-grid-white/[0.02] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)] rotate-x-90 translate-z-[-200px]" />
 
@@ -276,6 +281,7 @@ const OrbitalEcosystem = () => {
         </div>
 
       </motion.div>
+      )}
     </div>
   );
 };

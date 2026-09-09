@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
 interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -12,35 +12,22 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
   ...props
 }) => {
   const divRef = useRef<HTMLDivElement>(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
+  const spotRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current || isFocused) return;
-
-    const div = divRef.current;
-    const rect = div.getBoundingClientRect();
-
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    if (!divRef.current || !spotRef.current) return;
+    const rect = divRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    spotRef.current.style.background = `radial-gradient(600px circle at ${x}px ${y}px, ${spotlightColor}, transparent 40%)`;
   };
 
   const handleMouseEnter = () => {
-    setOpacity(1);
+    if (spotRef.current) spotRef.current.style.opacity = "1";
   };
 
   const handleMouseLeave = () => {
-    setOpacity(0);
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
-    setOpacity(1);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-    setOpacity(0);
+    if (spotRef.current) spotRef.current.style.opacity = "0";
   };
 
   return (
@@ -49,21 +36,17 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
       className={`relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 ${className}`}
       {...props}
     >
       <div
-        className="pointer-events-none absolute -inset-px transition duration-300"
-        style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 40%)`,
-        }}
+        ref={spotRef}
+        className="pointer-events-none absolute -inset-px transition-opacity duration-300 opacity-0"
+        style={{ willChange: "opacity" }}
       />
       <div className="relative z-10">{children}</div>
     </div>
   );
 };
 
-export default SpotlightCard;
+export default React.memo(SpotlightCard);
