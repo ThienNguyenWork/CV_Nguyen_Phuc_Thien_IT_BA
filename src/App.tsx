@@ -950,7 +950,7 @@ export default function App() {
               
               <div className="mt-12 flex justify-center">
                 <motion.a
-                  href="https://drive.google.com/uc?export=download&id=1qwScjiOZ4wkvget3wBV30ZGMs7HpPzTi"
+                  href="https://drive.google.com/file/d/1u8H0YBchAhfnaR9_2iRgmJeOdPhkVr3-/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -5 }}
