@@ -26,6 +26,7 @@ import {
 import BlurText from './components/BlurText';
 import SpotlightCard from './components/SpotlightCard';
 import ClickSpark from './components/ClickSpark';
+import OrbitalEcosystem from './components/OrbitalEcosystem';
 
 const Background = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -412,14 +413,14 @@ export default function App() {
         </div>
       </nav>
 
-      <main className="relative z-10 pt-40 pb-32 px-8 max-w-6xl mx-auto">
+      <main className="relative z-10 pt-40 pb-32">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
         >
           {/* Hero Section */}
-        <section className="mb-48">
+          <section className="mb-48 max-w-6xl mx-auto px-8">
           <div className="flex flex-col lg:flex-row gap-16 items-center lg:items-start text-center lg:text-left">
             <div className="flex-1 order-2 lg:order-1">
               <motion.div
@@ -514,7 +515,7 @@ export default function App() {
         </section>
 
         {/* Introduction Section (About) */}
-        <section id="about" className="mb-48 scroll-mt-32">
+        <section id="about" className="mb-48 scroll-mt-32 max-w-6xl mx-auto px-8">
           <div className="relative">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -535,20 +536,20 @@ export default function App() {
                 transition={{ delay: 0.2 }}
               >
                 <p className="text-xl md:text-2xl text-gray-400 leading-relaxed mb-8">
-                  I am a <span className="text-white font-medium">Junior IT Business Analyst</span> with a foundation in Information Technology. My approach combines technical understanding with business strategy to deliver solutions that are not just functional, but <span className="text-white font-medium">impactful</span>.
+                  As an <span className="text-white font-medium">IT Business Analyst</span>, I thrive at the intersection of business strategy and software engineering. My mission is to translate complex business needs into clear, actionable technical specifications.
                 </p>
                 <p className="text-lg text-gray-500 leading-relaxed mb-10">
-                  I thrive in the space where complex problems meet creative technical solutions. Whether it's designing wireframes for school management systems or analyzing market trends, I focus on <span className="text-blue-400">clarity, efficiency, and scalability</span>.
+                  With a background in <span className="text-blue-400">Information Technology</span> and experience in <span className="text-white font-medium">Business Development</span>, I bring a unique perspective to every project—ensuring that the solutions we build aren't just technically sound, but also drive real business value.
                 </p>
                 
                 <div className="grid grid-cols-2 gap-8">
                   <div>
-                    <h4 className="text-xs font-mono text-blue-500 uppercase tracking-widest mb-2">Philosophy</h4>
-                    <p className="text-sm text-gray-400 font-light">"Simplicity is the ultimate sophistication in system design."</p>
+                    <h4 className="text-xs font-mono text-blue-500 uppercase tracking-widest mb-2">Analysis</h4>
+                    <p className="text-sm text-gray-400 font-light">BRD, FRD, User Stories, BPMN</p>
                   </div>
                   <div>
-                    <h4 className="text-xs font-mono text-blue-500 uppercase tracking-widest mb-2">Focus</h4>
-                    <p className="text-sm text-gray-400 font-light">User-centric design & data-driven decision making.</p>
+                    <h4 className="text-xs font-mono text-blue-500 uppercase tracking-widest mb-2">Design</h4>
+                    <p className="text-sm text-gray-400 font-light">Wireframing, UI/UX Logic, Prototyping</p>
                   </div>
                 </div>
               </motion.div>
@@ -580,8 +581,89 @@ export default function App() {
           </div>
         </section>
 
+        {/* Ecosystem Section - Standalone Full Width Layer */}
+        <section className="mb-48 py-60 bg-[#020202] relative overflow-hidden w-full">
+          {/* Advanced Cosmic Background */}
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.1),transparent_70%)]" />
+            
+            {/* Moving Nebulae - Optimized with lower blur and opacity */}
+            <motion.div 
+              animate={{ 
+                scale: [1, 1.1, 1],
+                opacity: [0.1, 0.2, 0.1],
+              }}
+              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+              className="absolute -top-1/4 -left-1/4 w-full h-full bg-blue-600/10 blur-[100px] rounded-full"
+            />
+            <motion.div 
+              animate={{ 
+                scale: [1.1, 1, 1.1],
+                opacity: [0.1, 0.15, 0.1],
+              }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute -bottom-1/4 -right-1/4 w-full h-full bg-purple-600/10 blur-[100px] rounded-full"
+            />
+          </div>
+          
+          <div className="absolute inset-0 bg-grid opacity-[0.05]" />
+          
+          {/* Technical UI Overlays */}
+          <div className="absolute top-20 left-20 pointer-events-none hidden xl:block">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                <span className="text-[10px] font-mono text-blue-500/50 uppercase tracking-[0.4em]">System_Status: Operational</span>
+              </div>
+              <div className="w-48 h-px bg-gradient-to-r from-blue-500/20 to-transparent" />
+              <span className="text-[8px] font-mono text-gray-600 uppercase tracking-widest">Core_Nexus_v4.0.1</span>
+            </div>
+          </div>
+
+          <div className="absolute bottom-20 right-20 pointer-events-none hidden xl:block text-right">
+            <div className="flex flex-col gap-2 items-end">
+              <span className="text-[10px] font-mono text-blue-500/50 uppercase tracking-[0.4em]">Neural_Network_Active</span>
+              <div className="w-48 h-px bg-gradient-to-l from-blue-500/20 to-transparent" />
+              <div className="flex gap-4">
+                <span className="text-[8px] font-mono text-gray-600 uppercase tracking-widest">Lat: 10.8231° N</span>
+                <span className="text-[8px] font-mono text-gray-600 uppercase tracking-widest">Long: 106.6297° E</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="relative z-10 w-full">
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-40 px-4"
+            >
+              <h2 className="text-7xl md:text-[12rem] font-black tracking-tighter text-white mb-12 leading-none">
+                SKILLS <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 via-blue-600 to-indigo-900 drop-shadow-[0_0_50px_rgba(37,99,235,0.4)]">ECOSYSTEM</span>
+              </h2>
+              <div className="flex flex-col items-center gap-8">
+                <div className="flex items-center justify-center gap-8">
+                  <div className="h-px w-32 bg-gradient-to-r from-transparent to-blue-500" />
+                  <p className="text-blue-400/80 font-mono uppercase tracking-[1.2em] text-[10px] md:text-base font-bold">
+                    The Architecture of Intelligence
+                  </p>
+                  <div className="h-px w-32 bg-gradient-to-l from-transparent to-blue-500" />
+                </div>
+                <p className="max-w-3xl mx-auto text-gray-500 text-sm md:text-lg font-light leading-relaxed px-4">
+                  A multi-dimensional neural network of competencies orbiting a high-performance system nexus. 
+                  Engineered for strategic scalability and seamless business-to-tech integration.
+                </p>
+              </div>
+            </motion.div>
+            
+            <div className="relative w-full overflow-visible">
+              <OrbitalEcosystem />
+            </div>
+          </div>
+        </section>
+
         {/* Experience Section (Work) */}
-        <section id="work" className="mb-48 scroll-mt-32">
+        <section id="work" className="mb-48 scroll-mt-32 max-w-6xl mx-auto px-8">
           <div className="text-center mb-20">
             <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-blue-500 mb-4 block">What I have done so far</span>
             <h2 className="text-5xl md:text-7xl font-black tracking-tight text-white">Work Experience.</h2>
@@ -594,10 +676,25 @@ export default function App() {
             <div className="relative z-10">
               {[
                 {
+                  company: "Vũ Thảo Technology",
+                  role: "Junior Business Analyst",
+                  period: "Jul 2026 – Present",
+                  duration: "Present",
+                  description: [
+                    "Assigned and spearheaded business analysis for enterprise projects DOffice and DPM for strategic partner Petrolimex.",
+                    "Conducted systematic smoke testing on defects and issues identified internally by the team as well as requests directly from client Petrolimex.",
+                    "Analyzed root causes, proposed optimal functional solutions to the client, and coordinated with Project Manager to estimate time, assess resource feasibility, and set delivery timelines.",
+                    "Spearheaded the Mobile App & iPad product initiative for the Tasks & Assignments (Nhiệm vụ, công việc) Module: crafted end-to-end UI mockups and aligned with mobile engineers on implementation feasibility.",
+                    "Authored comprehensive Mobile Functional Specification documents (SRS / FRD) incorporating mockups, business logic, and validation rules for the Tasks & Assignments Module.",
+                    "Handed over specifications to client Petrolimex, captured feedback, iteratively updated change requests and refined UI mockups, successfully achieving official client sign-off before handover to the dev team.",
+                    "Operated under direct supervision of the Project Manager (Line Manager); authored Use Cases, logged and tracked bugs/issues, and managed project reporting via Azure DevOps."
+                  ]
+                },
+                {
                   company: "Vietnam AI Software Solutions",
                   role: "Junior Business Analyst",
-                  period: "Jul 2025 – Present",
-                  duration: "9 months",
+                  period: "Jul 2025 – Jul 2026",
+                  duration: "1 year",
                   description: [
                     "Designed wireframes and UI mockups for school management software modules to bridge the gap between user needs and development requirements.",
                     "Collaborated with Dev team and BA Lead to clarify task requirements, resolve blockers, and ensure timely delivery of product modules.",
@@ -662,7 +759,7 @@ export default function App() {
         </section>
 
         {/* Technical Skills - Bento Style */}
-        <section className="mb-48">
+        <section className="mb-48 max-w-6xl mx-auto px-8">
           <SectionHeading title="Technical Skills" subtitle="Stack" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <SpotlightCard className="p-8">
@@ -670,7 +767,7 @@ export default function App() {
                 <Layout className="w-5 h-5 text-blue-500" /> BA Tools
               </h3>
               <div className="flex flex-wrap gap-3">
-                {["Figma", "Lucidchart", "draw.io", "Google AI Studio", "Plantuml", "Stitch", "Lark"].map(skill => (
+                {["Figma", "Azure DevOps", "Lucidchart", "draw.io", "Google AI Studio", "Plantuml", "Stitch", "Lark"].map(skill => (
                   <span key={skill} className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-mono">{skill}</span>
                 ))}
               </div>
@@ -701,7 +798,7 @@ export default function App() {
         </section>
 
         {/* Resume Section */}
-        <section id="resume" className="mb-48 scroll-mt-32">
+        <section id="resume" className="mb-48 scroll-mt-32 max-w-6xl mx-auto px-8">
           <div className="max-w-5xl mx-auto">
             <div className="mb-12">
               <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-blue-500 mb-4 block">My Professional Journey</span>
@@ -764,10 +861,11 @@ export default function App() {
                   <section className="mb-10">
                     <h2 className="text-xl font-bold text-blue-600 uppercase tracking-widest border-b-2 border-blue-600 pb-1 mb-4">Professional Summary</h2>
                     <p className="text-gray-700 text-justify text-sm md:text-base">
-                      Business Analyst with nearly 1 year of hands-on experience in business analysis within the AI and technology software sector. 
-                      Proficient in requirements gathering, crafting detailed documentation (BRD/FRD), and analyzing business processes while 
-                      effectively collaborating with diverse stakeholders. Leveraging a solid IT technical foundation combined with a background in 
-                      Business Development, I bring a holistic perspective that bridges the gap between business objectives and product excellence.
+                      Business Analyst with hands-on experience in enterprise digital transformation (DOffice, DPM for Petrolimex) 
+                      and AI software solutions. Proficient in requirements elicitation, drafting comprehensive specifications (BRD/FRD/SRS), 
+                      UI/UX wireframing for web and mobile/iPad platforms, smoke testing, and agile tracking using Azure DevOps. 
+                      Leveraging a solid IT technical foundation combined with a background in Business Development, 
+                      I bring a holistic perspective that bridges the gap between business objectives and product excellence.
                     </p>
                   </section>
 
@@ -777,8 +875,9 @@ export default function App() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm text-gray-700">
                       {[
                         "Requirements Gathering & Analysis", "Process Mapping & BPMN 2.0", "Stakeholder Management",
-                        "User Story & Use Case Development", "SQL & Data Analysis", "Agile / Scrum Methodology",
-                        "Wireframing & Prototyping (Figma)", "BRD / FRD Documentation", "Presales & Client Engagement"
+                        "User Story & Use Case Development", "Mobile & iPad Mockups / SRS", "Smoke Testing & Defect Triage",
+                        "Azure DevOps & Work Item Tracking", "Wireframing & Prototyping (Figma)", "Agile / Scrum Methodology",
+                        "BRD / FRD Documentation", "SQL & Data Analysis", "Presales & Client Engagement"
                       ].map(skill => (
                         <div key={skill} className="flex items-center gap-3 border-b border-gray-100 py-1">
                           <div className="w-2 h-2 bg-blue-600 rounded-full" />
@@ -796,8 +895,25 @@ export default function App() {
                       {/* Job 1 */}
                       <div>
                         <div className="flex flex-col md:flex-row justify-between mb-2">
+                          <h3 className="font-bold text-lg text-gray-900">Vũ Thảo Technology</h3>
+                          <span className="text-sm text-gray-500 font-bold">Jul 2026 – Present</span>
+                        </div>
+                        <p className="text-blue-600 font-bold mb-3 italic">Junior Business Analyst</p>
+                        <ul className="list-disc list-outside ml-5 space-y-2 text-sm text-gray-700 text-justify">
+                          <li>Handed over and spearheaded core business analysis for enterprise projects DOffice and DPM for strategic partner Petrolimex.</li>
+                          <li>Conducted systematic smoke testing for defects and client-reported issues; performed root-cause analysis, proposed viable solutions, and aligned with Project Manager on feasibility, resource estimates, and release timelines.</li>
+                          <li>Served as lead BA for the Tasks & Assignments (Nhiệm vụ, công việc) Module across Mobile App & iPad platforms: independently designed UI mockups and aligned with mobile engineers on technical feasibility.</li>
+                          <li>Authored detailed Mobile Functional Specification documents (SRS / FRD) integrating complete UI mockups, business logic, and validation rules.</li>
+                          <li>Conducted requirement walkthroughs with client Petrolimex, captured feedback, iterated mockups, and successfully secured official client sign-off before handover to the dev team for sprint execution.</li>
+                          <li>Reported directly to Project Manager (Line Manager); created Use Cases, tracked bugs/issues, and managed project deliverables on Azure DevOps.</li>
+                        </ul>
+                      </div>
+
+                      {/* Job 2 */}
+                      <div>
+                        <div className="flex flex-col md:flex-row justify-between mb-2">
                           <h3 className="font-bold text-lg text-gray-900">Vietnam AI Software Solutions</h3>
-                          <span className="text-sm text-gray-500 font-bold">Jul 2025 – Present</span>
+                          <span className="text-sm text-gray-500 font-bold">Jul 2025 – Jul 2026 (1 year)</span>
                         </div>
                         <p className="text-blue-600 font-bold mb-3 italic">Junior Business Analyst</p>
                         <ul className="list-disc list-outside ml-5 space-y-2 text-sm text-gray-700 text-justify">
@@ -809,7 +925,7 @@ export default function App() {
                         </ul>
                       </div>
 
-                      {/* Job 2 */}
+                      {/* Job 3 */}
                       <div>
                         <div className="flex flex-col md:flex-row justify-between mb-2">
                           <h3 className="font-bold text-lg text-gray-900">HR1VIETNAM</h3>
@@ -847,7 +963,7 @@ export default function App() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 bg-gray-50 p-4 rounded-lg">
                       <div>
                         <p className="font-bold text-blue-600 mb-1">BA Tools</p>
-                        <p>Figma, Lucidchart, draw.io, Google AI Studio, Plantuml, Stitch, Lark</p>
+                        <p>Figma, Azure DevOps, Lucidchart, draw.io, Google AI Studio, Plantuml, Stitch, Lark</p>
                       </div>
                       <div>
                         <p className="font-bold text-blue-600 mb-1">Documentation</p>
@@ -884,7 +1000,7 @@ export default function App() {
         </section>
 
         {/* Footer (Contact) */}
-        <footer id="contact" className="pt-20 border-t border-white/5 scroll-mt-32">
+        <footer id="contact" className="pt-20 border-t border-white/5 scroll-mt-32 max-w-6xl mx-auto px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-12">
             <div className="flex flex-col items-center md:items-start gap-4">
               <motion.div 
