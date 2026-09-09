@@ -28,15 +28,25 @@ import SpotlightCard from './components/SpotlightCard';
 import ClickSpark from './components/ClickSpark';
 import OrbitalEcosystem from './components/OrbitalEcosystem';
 
-const Background = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+const Background = React.memo(() => {
+  const spotlightRef = useRef<HTMLDivElement>(null);
+  const rafId = useRef<number | null>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      if (rafId.current) return;
+      rafId.current = requestAnimationFrame(() => {
+        if (spotlightRef.current) {
+          spotlightRef.current.style.background = `radial-gradient(800px circle at ${e.clientX}px ${e.clientY}px, rgba(37, 99, 235, 0.12), transparent 80%)`;
+        }
+        rafId.current = null;
+      });
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId.current) cancelAnimationFrame(rafId.current);
+    };
   }, []);
 
   return (
@@ -52,94 +62,31 @@ const Background = () => {
       
       {/* Dynamic Spotlight */}
       <div 
-        className="absolute inset-0 transition-opacity duration-1000"
+        ref={spotlightRef}
+        className="absolute inset-0 transition-opacity duration-300"
         style={{
-          background: `radial-gradient(800px circle at ${mousePos.x}px ${mousePos.y}px, rgba(37, 99, 235, 0.12), transparent 80%)`
+          background: `radial-gradient(800px circle at 50vw 30vh, rgba(37, 99, 235, 0.12), transparent 80%)`
         }}
       />
 
-      {/* Animated Blobs */}
-      <motion.div 
-        animate={{
-          x: [0, 150, -100, 0],
-          y: [0, 100, 50, 0],
-          scale: [1, 1.3, 0.8, 1],
-          rotate: [0, 90, 180, 0],
-        }}
-        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-blue-600/10 blur-[150px] rounded-full"
-      />
-      <motion.div 
-        animate={{
-          x: [0, -150, 100, 0],
-          y: [0, -100, -50, 0],
-          scale: [1, 1.2, 0.9, 1],
-          rotate: [0, -90, -180, 0],
-        }}
-        transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/2 -right-40 w-[700px] h-[700px] bg-purple-600/10 blur-[180px] rounded-full"
-      />
-      <motion.div 
-        animate={{
-          x: [0, 100, -150, 0],
-          y: [0, 150, -100, 0],
-          scale: [0.8, 1.1, 1, 0.8],
-        }}
-        transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-blue-400/5 blur-[120px] rounded-full"
-      />
+      {/* Subtle Ambient Blobs */}
+      <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-blue-600/10 blur-[120px] rounded-full animate-float" />
+      <div className="absolute top-1/2 -right-40 w-[600px] h-[600px] bg-purple-600/10 blur-[140px] rounded-full animate-float-delayed" />
+      <div className="absolute bottom-0 left-1/4 w-[450px] h-[450px] bg-blue-400/5 blur-[100px] rounded-full animate-float" />
 
-      {/* Floating Particles/Stars */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(40)].map((_, i) => (
-          <motion.div
+      {/* Floating Particles - CSS Accelerated */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(14)].map((_, i) => (
+          <div
             key={i}
-            initial={{ 
-              x: Math.random() * 100 + "%", 
-              y: Math.random() * 100 + "%",
-              scale: Math.random() * 0.5 + 0.5,
-              opacity: Math.random() * 0.3 + 0.1
+            className="absolute w-1 h-1 bg-blue-400 rounded-full animate-pulse"
+            style={{
+              top: `${(i * 19 + 5) % 100}%`,
+              left: `${(i * 23 + 11) % 100}%`,
+              opacity: 0.25,
+              animationDuration: `${3 + (i % 5)}s`
             }}
-            animate={{ 
-              opacity: [0.1, 0.4, 0.1],
-              scale: [1, 1.2, 1],
-              y: ["-2%", "2%"]
-            }}
-            transition={{ 
-              duration: 3 + Math.random() * 5, 
-              repeat: Infinity, 
-              ease: "easeInOut",
-              delay: Math.random() * 5
-            }}
-            className="absolute w-1 h-1 bg-blue-400 rounded-full blur-[1px]"
           />
-        ))}
-      </div>
-
-      {/* Floating Icons */}
-      <div className="absolute inset-0 overflow-hidden opacity-[0.03]">
-        {[Code, Database, Layout, Search, ClipboardList, Terminal, PenTool].map((Icon, i) => (
-          <motion.div
-            key={i}
-            initial={{ 
-              x: Math.random() * 100 + "%", 
-              y: Math.random() * 100 + "%",
-              rotate: Math.random() * 360
-            }}
-            animate={{ 
-              y: ["-10%", "110%"],
-              rotate: [0, 360]
-            }}
-            transition={{ 
-              duration: 40 + Math.random() * 40, 
-              repeat: Infinity, 
-              ease: "linear",
-              delay: -Math.random() * 40
-            }}
-            className="absolute"
-          >
-            <Icon className="w-24 h-24 text-blue-500" />
-          </motion.div>
         ))}
       </div>
 
@@ -147,9 +94,9 @@ const Background = () => {
       <div className="absolute inset-0 bg-radial-vignette pointer-events-none" />
     </div>
   );
-};
+});
 
-const ScrollProgress = () => {
+const ScrollProgress = React.memo(() => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -163,45 +110,60 @@ const ScrollProgress = () => {
       style={{ scaleX }}
     />
   );
-};
+});
 
-const MouseFollower = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+const MouseFollower = React.memo(() => {
+  const followerRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
+    let rafId: number;
+    let targetX = -100;
+    let targetY = -100;
+    let currentX = -100;
+    let currentY = -100;
+
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      targetX = e.clientX - 16;
+      targetY = e.clientY - 16;
     };
+
+    const updateLoop = () => {
+      currentX += (targetX - currentX) * 0.25;
+      currentY += (targetY - currentY) * 0.25;
+      if (followerRef.current) {
+        followerRef.current.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+      }
+      rafId = requestAnimationFrame(updateLoop);
+    };
+    rafId = requestAnimationFrame(updateLoop);
+
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.closest('button, a, .cursor-pointer')) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
+      const hover = Boolean(target.closest('button, a, .cursor-pointer'));
+      setIsHovering(prev => (prev !== hover ? hover : prev));
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseover', handleMouseOver);
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseover', handleMouseOver);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
   return (
-    <motion.div
-      className="fixed top-0 left-0 w-8 h-8 border border-blue-500 rounded-full pointer-events-none z-[9999] hidden md:block"
-      animate={{
-        x: mousePos.x - 16,
-        y: mousePos.y - 16,
-        scale: isHovering ? 2 : 1,
-        backgroundColor: isHovering ? "rgba(59, 130, 246, 0.1)" : "transparent"
-      }}
-      transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
+    <div
+      ref={followerRef}
+      className={`fixed top-0 left-0 w-8 h-8 border border-blue-500 rounded-full pointer-events-none z-[9999] hidden md:block transition-[background-color,border-color,width,height] duration-200 ${
+        isHovering ? "scale-150 bg-blue-500/10" : "scale-100 bg-transparent"
+      }`}
+      style={{ willChange: 'transform' }}
     />
   );
-};
+});
 
 const BentoGrid = ({ children }: { children: React.ReactNode }) => (
   <motion.div 
@@ -434,7 +396,7 @@ export default function App() {
               
               <BlurText
                 text="NGUYỄN PHÚC THIÊN"
-                delay={80}
+                delay={25}
                 animateBy="letters"
                 direction="top"
                 className="text-5xl md:text-8xl font-black tracking-tighter mb-6 leading-[0.9]"
@@ -443,7 +405,7 @@ export default function App() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
+                transition={{ delay: 0.2 }}
               >
                 <h2 className="text-2xl md:text-3xl text-gray-400 font-light mb-10 max-w-2xl leading-relaxed">
                   A <span className="text-white font-medium">Junior IT Business Analyst</span> specializing in bridging the gap between <span className="text-blue-500">business vision</span> and <span className="text-white font-medium">technical reality</span> through structured requirements and data-driven solutions.
@@ -497,7 +459,7 @@ export default function App() {
             <motion.div 
               initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ type: "spring", stiffness: 100, delay: 0.3 }}
+              transition={{ type: "spring", stiffness: 100, delay: 0.1 }}
               className="relative w-64 h-64 md:w-80 md:h-80 order-1 lg:order-2"
             >
               <div className="absolute inset-0 bg-blue-600 rounded-[3rem] rotate-6 opacity-20 blur-2xl" />
@@ -508,6 +470,8 @@ export default function App() {
                   className="w-full h-full object-cover transition-all duration-700 scale-110 group-hover:scale-100"
                   whileHover={{ rotate: -2, scale: 1.05 }}
                   referrerPolicy="no-referrer"
+                  loading="eager"
+                  decoding="async"
                 />
               </div>
             </motion.div>
@@ -573,6 +537,8 @@ export default function App() {
                       alt="Professional Portrait" 
                       className="w-full h-full object-cover transition-all duration-700"
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </motion.div>
                 ))}
@@ -582,7 +548,7 @@ export default function App() {
         </section>
 
         {/* Ecosystem Section - Standalone Full Width Layer */}
-        <section className="mb-48 py-60 bg-[#020202] relative overflow-hidden w-full">
+        <section className="mb-48 py-60 bg-[#020202] relative overflow-hidden w-full [content-visibility:auto] [contain-intrinsic-size:1000px]">
           {/* Advanced Cosmic Background */}
           <div className="absolute inset-0">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.1),transparent_70%)]" />
@@ -684,7 +650,7 @@ export default function App() {
                     "Assigned and spearheaded business analysis for enterprise projects DOffice and DPM for strategic partner Petrolimex.",
                     "Conducted systematic smoke testing on defects and issues identified internally by the team as well as requests directly from client Petrolimex.",
                     "Analyzed root causes, proposed optimal functional solutions to the client, and coordinated with Project Manager to estimate time, assess resource feasibility, and set delivery timelines.",
-                    "Spearheaded the Mobile App & iPad product initiative for the Tasks & Assignments (Nhiệm vụ, công việc) Module: crafted end-to-end UI mockups and aligned with mobile engineers on implementation feasibility.",
+                    "Spearheaded the Mobile App & iPad product initiative for the Tasks & Assignments Module: crafted end-to-end UI mockups and aligned with mobile engineers on implementation feasibility.",
                     "Authored comprehensive Mobile Functional Specification documents (SRS / FRD) incorporating mockups, business logic, and validation rules for the Tasks & Assignments Module.",
                     "Handed over specifications to client Petrolimex, captured feedback, iteratively updated change requests and refined UI mockups, successfully achieving official client sign-off before handover to the dev team.",
                     "Operated under direct supervision of the Project Manager (Line Manager); authored Use Cases, logged and tracked bugs/issues, and managed project reporting via Azure DevOps."
@@ -902,7 +868,7 @@ export default function App() {
                         <ul className="list-disc list-outside ml-5 space-y-2 text-sm text-gray-700 text-justify">
                           <li>Handed over and spearheaded core business analysis for enterprise projects DOffice and DPM for strategic partner Petrolimex.</li>
                           <li>Conducted systematic smoke testing for defects and client-reported issues; performed root-cause analysis, proposed viable solutions, and aligned with Project Manager on feasibility, resource estimates, and release timelines.</li>
-                          <li>Served as lead BA for the Tasks & Assignments (Nhiệm vụ, công việc) Module across Mobile App & iPad platforms: independently designed UI mockups and aligned with mobile engineers on technical feasibility.</li>
+                          <li>Served as lead BA for the Tasks & Assignments Module across Mobile App & iPad platforms: independently designed UI mockups and aligned with mobile engineers on technical feasibility.</li>
                           <li>Authored detailed Mobile Functional Specification documents (SRS / FRD) integrating complete UI mockups, business logic, and validation rules.</li>
                           <li>Conducted requirement walkthroughs with client Petrolimex, captured feedback, iterated mockups, and successfully secured official client sign-off before handover to the dev team for sprint execution.</li>
                           <li>Reported directly to Project Manager (Line Manager); created Use Cases, tracked bugs/issues, and managed project deliverables on Azure DevOps.</li>

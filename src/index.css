@@ -74,9 +74,11 @@
 }
 
 .animate-float {
-  animation: float 10s ease-in-out infinite;
+  animation: float 14s ease-in-out infinite;
+  will-change: transform;
 }
 
 .animate-float-delayed {
-  animation: float 12s ease-in-out infinite 2s;
+  animation: float 18s ease-in-out infinite 3s;
+  will-change: transform;
 }

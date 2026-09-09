@@ -19,9 +19,9 @@ interface Spark {
 }
 
 const ClickSpark: React.FC<ClickSparkProps> = ({
-  sparkColor = '#fff',
+  sparkColor = '#3b82f6',
   sparkSize = 10,
-  sparkRadius = 15,
+  sparkRadius = 20,
   sparkCount = 8,
   duration = 400,
   easing = 'ease-out',
@@ -30,38 +30,24 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sparksRef = useRef<Spark[]>([]);
-  const startTimeRef = useRef<number | null>(null);
+  const isRunningRef = useRef<boolean>(false);
+  const animFrameIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const parent = canvas.parentElement;
-    if (!parent) return;
-
-    let resizeTimeout: ReturnType<typeof setTimeout>;
-
-    const resizeCanvas = () => {
-      const { width, height } = parent.getBoundingClientRect();
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-      }
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
-
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resizeCanvas, 100);
-    };
-
-    const ro = new ResizeObserver(handleResize);
-    ro.observe(parent);
-
-    resizeCanvas();
-
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
     return () => {
-      ro.disconnect();
-      clearTimeout(resizeTimeout);
+      window.removeEventListener('resize', resize);
+      if (animFrameIdRef.current) {
+        cancelAnimationFrame(animFrameIdRef.current);
+      }
     };
   }, []);
 
@@ -81,18 +67,16 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
     [easing]
   );
 
-  useEffect(() => {
+  const startAnimationLoop = useCallback(() => {
+    if (isRunningRef.current) return;
+    isRunningRef.current = true;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationId: number;
-
     const draw = (timestamp: number) => {
-      if (!startTimeRef.current) {
-        startTimeRef.current = timestamp;
-      }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       sparksRef.current = sparksRef.current.filter(spark => {
@@ -123,24 +107,23 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
         return true;
       });
 
-      animationId = requestAnimationFrame(draw);
+      if (sparksRef.current.length > 0) {
+        animFrameIdRef.current = requestAnimationFrame(draw);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        isRunningRef.current = false;
+        animFrameIdRef.current = null;
+      }
     };
 
-    animationId = requestAnimationFrame(draw);
-
-    return () => {
-      cancelAnimationFrame(animationId);
-    };
-  }, [sparkColor, sparkSize, sparkRadius, sparkCount, duration, easeFunc, extraScale]);
+    animFrameIdRef.current = requestAnimationFrame(draw);
+  }, [duration, easeFunc, extraScale, sparkColor, sparkRadius, sparkSize]);
 
   const handleClick = (e: React.MouseEvent) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
+    const x = e.clientX;
+    const y = e.clientY;
     const now = performance.now();
+
     const newSparks = Array.from({ length: sparkCount }, (_, i) => ({
       x,
       y,
@@ -149,20 +132,18 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
     }));
 
     sparksRef.current.push(...newSparks);
+    startAnimationLoop();
   };
 
   return (
-    <div
-      className="relative w-full h-full"
-      onClick={handleClick}
-    >
+    <div className="relative w-full h-full" onClick={handleClick}>
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full block pointer-events-none select-none z-[9999]"
+        className="fixed inset-0 pointer-events-none select-none z-[9999]"
       />
       {children}
     </div>
   );
 };
 
-export default ClickSpark;
+export default React.memo(ClickSpark);

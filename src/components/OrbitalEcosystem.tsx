@@ -215,7 +215,7 @@ const OrbitalEcosystem = () => {
                   className="relative group cursor-pointer"
                 >
                   {/* Holographic Module UI */}
-                  <div className="bg-black/80 backdrop-blur-xl border border-white/10 p-4 md:p-8 rounded-[2rem] flex flex-col items-center gap-4 md:gap-6 min-w-[120px] md:min-w-[300px] transition-all duration-500 group-hover:border-blue-500/50 shadow-2xl overflow-hidden">
+                  <div className="bg-[#050914]/90 border border-white/10 p-4 md:p-8 rounded-[2rem] flex flex-col items-center gap-4 md:gap-6 min-w-[120px] md:min-w-[300px] transition-all duration-500 group-hover:border-blue-500/50 shadow-2xl overflow-hidden">
                     
                     {/* Module Header */}
                     <div className="w-full flex justify-between items-center mb-2 px-2">
@@ -228,7 +228,7 @@ const OrbitalEcosystem = () => {
 
                     {/* Icon with Energy Ring */}
                     <div className="relative">
-                      <div className="absolute inset-0 bg-blue-500 blur-2xl opacity-0 group-hover:opacity-30 transition-opacity" />
+                      <div className="absolute inset-0 bg-blue-500 blur-xl opacity-0 group-hover:opacity-30 transition-opacity" />
                       <div className="relative p-3 md:p-6 rounded-2xl md:rounded-3xl bg-white/5 border border-white/10 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
                         <skill.icon className="w-5 h-5 md:w-10 md:h-10 text-blue-400 group-hover:text-white" />
                       </div>
@@ -249,13 +249,6 @@ const OrbitalEcosystem = () => {
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-white/20 rounded-tl-lg" />
                     <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-white/20 rounded-br-lg" />
-                    
-                    {/* Scanning Line */}
-                    <motion.div 
-                      animate={{ top: ['-100%', '200%'] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                      className="absolute left-0 w-full h-1/2 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent skew-y-12 pointer-events-none"
-                    />
                   </div>
 
                   {/* Data Line to Center */}
@@ -266,26 +259,17 @@ const OrbitalEcosystem = () => {
           );
         })}
 
-        {/* Deep Space Particles */}
+        {/* Deep Space Star Dust - Lightweight CSS */}
         <div className="absolute inset-0 pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
+          {[...Array(8)].map((_, i) => (
+            <div
               key={`star-${i}`}
-              className="absolute w-1 h-1 bg-blue-400 rounded-full blur-[1px]"
-              animate={{
-                opacity: [0.1, 0.4, 0.1],
-                scale: [1, 2, 1],
-                z: [0, 200, 0]
-              }}
-              transition={{
-                duration: 5 + Math.random() * 5,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: Math.random() * 5
-              }}
+              className="absolute w-1 h-1 bg-blue-400 rounded-full animate-pulse"
               style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
+                top: `${(i * 13 + 7) % 100}%`,
+                left: `${(i * 17 + 11) % 100}%`,
+                opacity: 0.3,
+                animationDuration: `${3 + (i % 4)}s`,
               }}
             />
           ))}
