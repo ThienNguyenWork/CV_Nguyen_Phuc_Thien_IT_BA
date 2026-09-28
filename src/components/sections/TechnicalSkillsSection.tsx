@@ -3,10 +3,7 @@ import { motion } from 'motion/react';
 import { Layout, Database, Terminal } from 'lucide-react';
 import SpotlightCard from '../SpotlightCard';
 import SectionHeading from '../SectionHeading';
-
-const baTools = ["Figma", "Azure DevOps", "Lucidchart", "draw.io", "Google AI Studio", "Plantuml", "Stitch", "Lark"];
-const dataTools = ["SQL (basic)", "Microsoft Excel", "Google Sheets"];
-const methodologies = ["Agile / Scrum", "Waterfall", "SDLC"];
+import { baTools, dataTools, methodologies } from '../../data/technicalSkillsData';
 
 interface SkillCategoryCardProps {
   title: string;
