@@ -13,9 +13,9 @@ export const EcosystemSection: React.FC<EcosystemSectionProps> = React.memo(({ i
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.08),transparent_70%)]" />
         
-        {/* Moving Nebulae - Hardware-composited radial pulses, paused when offscreen */}
+        {/* Moving Nebulae - Hardware-composited radial pulses, paused when offscreen or actively scrolling */}
         <div 
-          className="absolute -top-1/4 -left-1/4 w-full h-full rounded-full pointer-events-none"
+          className="absolute -top-1/4 -left-1/4 w-full h-full rounded-full pointer-events-none pause-on-scroll"
           style={{
             background: 'radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 65%)',
             animation: 'nebula-pulse-1 15s linear infinite',
@@ -24,7 +24,7 @@ export const EcosystemSection: React.FC<EcosystemSectionProps> = React.memo(({ i
           }}
         />
         <div 
-          className="absolute -bottom-1/4 -right-1/4 w-full h-full rounded-full pointer-events-none"
+          className="absolute -bottom-1/4 -right-1/4 w-full h-full rounded-full pointer-events-none pause-on-scroll"
           style={{
             background: 'radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.1) 0%, transparent 65%)',
             animation: 'nebula-pulse-2 20s linear infinite',
@@ -71,7 +71,7 @@ export const EcosystemSection: React.FC<EcosystemSectionProps> = React.memo(({ i
           className="text-center mb-40 px-4"
         >
           <h2 className="text-7xl md:text-[12rem] font-black tracking-tighter text-white mb-12 leading-none">
-            SKILLS <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 via-blue-600 to-indigo-900 drop-shadow-[0_0_25px_rgba(37,99,235,0.35)]">ECOSYSTEM</span>
+            SKILLS <span className="relative inline-block"><span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 via-blue-600 to-indigo-900">ECOSYSTEM</span><span className="absolute inset-0 bg-blue-600/20 blur-2xl -z-10 rounded-full pointer-events-none" /></span>
           </h2>
           <div className="flex flex-col items-center gap-8">
             <div className="flex items-center justify-center gap-8">

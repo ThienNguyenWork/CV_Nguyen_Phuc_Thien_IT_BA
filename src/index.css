@@ -117,3 +117,8 @@
   50% { transform: scale(1); opacity: 0.18; }
 }
 
+/* Optimization: pause secondary decorative micro-animations during active scrolling */
+.is-scrolling .pause-on-scroll {
+  animation-play-state: paused !important;
+}
+

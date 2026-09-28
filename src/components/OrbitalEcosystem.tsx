@@ -96,7 +96,7 @@ const SystemNexus: React.FC<{ isInView: boolean }> = React.memo(({ isInView }) =
           {[...Array(5)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-px h-full bg-gradient-to-b from-transparent via-blue-400 to-transparent"
+              className="absolute w-px h-full bg-gradient-to-b from-transparent via-blue-400 to-transparent pause-on-scroll"
               style={{
                 left: `${20 * i + 10}%`,
                 animation: `nexus-data-stream ${3 + i}s linear infinite`,
@@ -115,8 +115,12 @@ const SystemNexus: React.FC<{ isInView: boolean }> = React.memo(({ isInView }) =
               transformStyle: 'preserve-3d',
             }}
           >
+            {/* Pure hardware radial glow replaces CPU blur filter to eliminate 3D software rasterization */}
             <div 
-              className="absolute inset-0 bg-blue-500/20 rounded-full blur-md -z-10 pointer-events-none" 
+              className="absolute -inset-2 rounded-full pointer-events-none -z-10" 
+              style={{
+                background: 'radial-gradient(circle, rgba(59, 130, 246, 0.45) 0%, rgba(37, 99, 235, 0.15) 50%, transparent 75%)',
+              }}
             />
             <Cpu className="w-8 h-8 md:w-24 md:h-24 text-white mb-6" />
           </div>
@@ -219,7 +223,7 @@ const OrbitingSkillModule: React.FC<OrbitingSkillModuleProps> = React.memo(({
                   <div className="w-full flex justify-between items-center mb-2 px-2">
                     <div className="flex items-center gap-2">
                       <div 
-                        className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" 
+                        className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse pause-on-scroll" 
                         style={{ animationPlayState: isInView ? 'running' : 'paused' }}
                       />
                       <span className="text-[8px] font-mono text-blue-500/70 uppercase tracking-widest">Module_{index + 1}</span>
@@ -279,7 +283,7 @@ const DeepSpaceStarDust: React.FC<{ isInView: boolean }> = React.memo(({ isInVie
       {[...Array(8)].map((_, i) => (
         <div
           key={`star-${i}`}
-          className="absolute w-1 h-1 bg-blue-400 rounded-full animate-pulse"
+          className="absolute w-1 h-1 bg-blue-400 rounded-full animate-pulse pause-on-scroll"
           style={{
             top: `${(i * 13 + 7) % 100}%`,
             left: `${(i * 17 + 11) % 100}%`,
@@ -316,6 +320,36 @@ const OrbitalEcosystem: React.FC<OrbitalEcosystemProps> = ({ isVisible }) => {
   // Spring smoothing with restDelta prevents per-pixel 3D matrix recalculation on scroll
   const rotateX = useSpring(rawRotateX, { stiffness: 70, damping: 22, restDelta: 0.05 });
   const rotateZ = useSpring(rawRotateZ, { stiffness: 70, damping: 22, restDelta: 0.05 });
+
+  // Lightweight scroll-state detection without React re-renders:
+  // Pauses secondary micro-animations during active scroll bursts to guarantee 60 FPS
+  React.useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof window === 'undefined') return;
+
+    let timer: number | null = null;
+    let isScrolling = false;
+
+    const onScroll = () => {
+      if (!isScrolling) {
+        isScrolling = true;
+        el.classList.add('is-scrolling');
+      }
+      if (timer !== null) {
+        window.clearTimeout(timer);
+      }
+      timer = window.setTimeout(() => {
+        isScrolling = false;
+        el.classList.remove('is-scrolling');
+      }, 150);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (timer !== null) window.clearTimeout(timer);
+    };
+  }, []);
 
   // ResizeObserver with RAF debouncing - updates scale ONLY when breakpoint changes
   React.useEffect(() => {
