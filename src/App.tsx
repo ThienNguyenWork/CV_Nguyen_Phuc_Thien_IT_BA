@@ -23,9 +23,23 @@ const ContactSection = lazy(() => import('./components/sections/ContactSection')
 const NAVBAR_SECTION_IDS = ['about', 'work', 'resume', 'contact'];
 const ALL_SECTION_IDS = ['about', 'ecosystem', 'work', 'skills', 'resume', 'contact'] as const;
 
+// Isolated Navbar component that tracks active section without re-rendering App root
+const ConnectedNavbar: React.FC<{
+  onNavigate: (id: string) => void;
+  onScrollToTop: () => void;
+}> = React.memo(({ onNavigate, onScrollToTop }) => {
+  const activeSection = useActiveSection(NAVBAR_SECTION_IDS);
+  return (
+    <Navbar 
+      onNavigate={onNavigate} 
+      onScrollToTop={onScrollToTop} 
+      activeSection={activeSection} 
+    />
+  );
+});
+
 export default function App() {
   const { scrollToSection, scrollToTop } = useSmoothScroll(80);
-  const activeSection = useActiveSection(NAVBAR_SECTION_IDS);
   const {
     isNearViewport,
     hasEnteredViewport,
@@ -45,10 +59,9 @@ export default function App() {
         <ScrollProgress />
         <MouseFollower />
 
-        <Navbar 
+        <ConnectedNavbar 
           onNavigate={scrollToSection} 
           onScrollToTop={scrollToTop} 
-          activeSection={activeSection} 
         />
 
         <main className="relative z-10 pt-40 pb-32">

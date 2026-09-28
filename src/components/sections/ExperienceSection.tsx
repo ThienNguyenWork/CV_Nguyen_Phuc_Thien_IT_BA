@@ -35,7 +35,7 @@ const ExperienceTimelineItem: React.FC<{
       <motion.div 
         initial={{ opacity: 0, x: isEven ? 50 : -50, scale: 0.98 }}
         whileInView={{ opacity: 1, x: 0, scale: 1 }}
-        viewport={{ once: false, amount: 0.15 }}
+        viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.45, ease: "easeOut" }}
         className="w-full md:w-[46%] pl-12 md:pl-0"
       >
@@ -209,6 +209,14 @@ export const ExperienceSection: React.FC = React.memo(() => {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() => new Set(["vu-thao"]));
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  // Stable callback refs for each milestone item to preserve React.memo
+  const itemRefCallbacks = useRef<((el: HTMLDivElement | null) => void)[]>([]);
+  if (itemRefCallbacks.current.length !== experiences.length) {
+    itemRefCallbacks.current = experiences.map((_, idx) => (el: HTMLDivElement | null) => {
+      itemRefs.current[idx] = el;
+    });
+  }
+
   const scrollToSkillsSection = useCallback(() => {
     // Wait for the collapse animation to complete, then scroll smoothly to the Technical Skills (Stack) section
     setTimeout(() => {
@@ -276,7 +284,7 @@ export const ExperienceSection: React.FC = React.memo(() => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.5 }}
         className="text-center mb-16"
       >
@@ -328,7 +336,7 @@ export const ExperienceSection: React.FC = React.memo(() => {
               totalCount={experiences.length}
               isExpanded={expandedIds.has(item.id)}
               onToggle={handleToggle}
-              innerRef={(el) => { itemRefs.current[idx] = el; }}
+              innerRef={itemRefCallbacks.current[idx]}
             />
           ))}
         </div>

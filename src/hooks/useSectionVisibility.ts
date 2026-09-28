@@ -44,8 +44,9 @@ export function useSectionVisibility(
     return initial;
   });
 
-  // Keep track of observed DOM nodes by section id
+  // Keep track of observed DOM nodes and stable callbacks by section id
   const nodesRef = useRef<Map<string, HTMLElement>>(new Map());
+  const callbacksRef = useRef<Map<string, (node: HTMLElement | null) => void>>(new Map());
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   // Setup the single centralized IntersectionObserver instance
@@ -104,23 +105,28 @@ export function useSectionVisibility(
 
   // Stable ref registration callback for sections
   const registerSection = useCallback((id: string) => {
-    return (node: HTMLElement | null) => {
-      const prevNode = nodesRef.current.get(id);
+    let callback = callbacksRef.current.get(id);
+    if (!callback) {
+      callback = (node: HTMLElement | null) => {
+        const prevNode = nodesRef.current.get(id);
 
-      if (prevNode && prevNode !== node && observerRef.current) {
-        observerRef.current.unobserve(prevNode);
-      }
-
-      if (node) {
-        node.setAttribute('data-section-id', id);
-        nodesRef.current.set(id, node);
-        if (observerRef.current) {
-          observerRef.current.observe(node);
+        if (prevNode && prevNode !== node && observerRef.current) {
+          observerRef.current.unobserve(prevNode);
         }
-      } else {
-        nodesRef.current.delete(id);
-      }
-    };
+
+        if (node) {
+          node.setAttribute('data-section-id', id);
+          nodesRef.current.set(id, node);
+          if (observerRef.current) {
+            observerRef.current.observe(node);
+          }
+        } else {
+          nodesRef.current.delete(id);
+        }
+      };
+      callbacksRef.current.set(id, callback);
+    }
+    return callback;
   }, []);
 
   const isNearViewport = useCallback(

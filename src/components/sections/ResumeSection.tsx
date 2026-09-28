@@ -24,7 +24,7 @@ export const ResumeSection: React.FC = React.memo(() => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5 }}
           className="mb-12"
         >
@@ -36,7 +36,7 @@ export const ResumeSection: React.FC = React.memo(() => {
           initial={{ opacity: 0, y: 40, scale: 0.98 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          viewport={{ once: false, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.1 }}
         >
           <SpotlightCard className="p-2 md:p-12 bg-[#0a0a0a] border border-white/5 hover:border-white/10 transition-[border-color] duration-300">
             <div className="mb-4 md:hidden text-center">

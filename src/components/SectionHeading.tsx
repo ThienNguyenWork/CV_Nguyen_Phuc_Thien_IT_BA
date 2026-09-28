@@ -11,14 +11,14 @@ export const SectionHeading: React.FC<SectionHeadingProps> = React.memo(({ title
     <motion.div 
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: false, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5 }}
       className="flex items-center gap-4 mb-4"
     >
       <motion.div 
         initial={{ width: 0 }}
         whileInView={{ width: 48 }}
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="h-px bg-blue-500" 
       />
@@ -27,7 +27,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = React.memo(({ title
     <motion.h2 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5, delay: 0.1 }}
       className="text-4xl md:text-5xl font-bold tracking-tight text-white group"
     >

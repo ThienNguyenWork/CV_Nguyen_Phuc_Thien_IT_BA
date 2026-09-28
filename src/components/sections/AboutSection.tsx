@@ -14,7 +14,7 @@ export const AboutSection: React.FC = React.memo(() => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5 }}
           className="flex items-start gap-4 mb-8"
         >
@@ -29,7 +29,7 @@ export const AboutSection: React.FC = React.memo(() => {
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <p className="text-xl md:text-2xl text-gray-400 leading-relaxed mb-8">
@@ -57,7 +57,7 @@ export const AboutSection: React.FC = React.memo(() => {
                 key={i}
                 initial={{ opacity: 0, scale: 0.85, rotate: item.rotate }}
                 whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                viewport={{ once: false, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="w-40 h-56 md:w-48 md:h-64 rounded-2xl overflow-hidden border border-white/10 bg-white/5 shadow-2xl relative group"
               >

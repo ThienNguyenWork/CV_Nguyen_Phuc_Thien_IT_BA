@@ -17,7 +17,7 @@ export function useSmoothCursor({
   const followerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let rafId: number;
+    let rafId: number | null = null;
     let targetX = -100;
     let targetY = -100;
     let currentX = -100;
@@ -26,15 +26,28 @@ export function useSmoothCursor({
     let currentScale = 1;
     let isHovering = false;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      targetX = e.clientX - offset;
-      targetY = e.clientY - offset;
-    };
-
     const updateLoop = () => {
-      currentX += (targetX - currentX) * lerp;
-      currentY += (targetY - currentY) * lerp;
-      currentScale += (targetScale - currentScale) * 0.2;
+      const diffX = targetX - currentX;
+      const diffY = targetY - currentY;
+      const diffScale = targetScale - currentScale;
+
+      const isPositionSettled = Math.abs(diffX) < 0.1 && Math.abs(diffY) < 0.1;
+      const isScaleSettled = Math.abs(diffScale) < 0.005;
+
+      if (isPositionSettled && isScaleSettled) {
+        currentX = targetX;
+        currentY = targetY;
+        currentScale = targetScale;
+        if (followerRef.current) {
+          followerRef.current.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(${currentScale})`;
+        }
+        rafId = null;
+        return; // Sleep loop when settled
+      }
+
+      currentX += diffX * lerp;
+      currentY += diffY * lerp;
+      currentScale += diffScale * 0.2;
 
       if (followerRef.current) {
         followerRef.current.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(${currentScale})`;
@@ -43,7 +56,17 @@ export function useSmoothCursor({
       rafId = requestAnimationFrame(updateLoop);
     };
 
-    rafId = requestAnimationFrame(updateLoop);
+    const startLoop = () => {
+      if (rafId === null) {
+        rafId = requestAnimationFrame(updateLoop);
+      }
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      targetX = e.clientX - offset;
+      targetY = e.clientY - offset;
+      startLoop();
+    };
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
@@ -60,6 +83,7 @@ export function useSmoothCursor({
             followerRef.current.classList.add('bg-transparent');
           }
         }
+        startLoop();
       }
     };
 
@@ -69,7 +93,10 @@ export function useSmoothCursor({
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseover', handleMouseOver);
-      cancelAnimationFrame(rafId);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
     };
   }, [lerp, offset]);
 

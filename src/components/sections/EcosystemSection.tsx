@@ -40,7 +40,10 @@ export const EcosystemSection: React.FC<EcosystemSectionProps> = React.memo(({ i
       <div className="absolute top-20 left-20 pointer-events-none hidden xl:block">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+            <div 
+              className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" 
+              style={{ animationPlayState: isVisible ? 'running' : 'paused' }}
+            />
             <span className="text-[10px] font-mono text-blue-500/50 uppercase tracking-[0.4em]">System_Status: Operational</span>
           </div>
           <div className="w-48 h-px bg-gradient-to-r from-blue-500/20 to-transparent" />
