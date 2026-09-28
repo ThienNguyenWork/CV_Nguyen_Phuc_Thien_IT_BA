@@ -321,36 +321,6 @@ const OrbitalEcosystem: React.FC<OrbitalEcosystemProps> = ({ isVisible }) => {
   const rotateX = useSpring(rawRotateX, { stiffness: 70, damping: 22, restDelta: 0.05 });
   const rotateZ = useSpring(rawRotateZ, { stiffness: 70, damping: 22, restDelta: 0.05 });
 
-  // Lightweight scroll-state detection without React re-renders:
-  // Pauses secondary micro-animations during active scroll bursts to guarantee 60 FPS
-  React.useEffect(() => {
-    const el = containerRef.current;
-    if (!el || typeof window === 'undefined') return;
-
-    let timer: number | null = null;
-    let isScrolling = false;
-
-    const onScroll = () => {
-      if (!isScrolling) {
-        isScrolling = true;
-        el.classList.add('is-scrolling');
-      }
-      if (timer !== null) {
-        window.clearTimeout(timer);
-      }
-      timer = window.setTimeout(() => {
-        isScrolling = false;
-        el.classList.remove('is-scrolling');
-      }, 150);
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (timer !== null) window.clearTimeout(timer);
-    };
-  }, []);
-
   // ResizeObserver with RAF debouncing - updates scale ONLY when breakpoint changes
   React.useEffect(() => {
     if (!containerRef.current || typeof ResizeObserver === 'undefined') return;
@@ -376,6 +346,42 @@ const OrbitalEcosystem: React.FC<OrbitalEcosystemProps> = ({ isVisible }) => {
 
   const localInView = useInView(containerRef, { margin: "150px", once: false });
   const isInView = isVisible !== undefined ? isVisible : localInView;
+
+  // Lightweight scroll-state detection:
+  // ONLY attached while Ecosystem is in-view. Completely detached when offscreen so
+  // scrolling in Experience / Technical Skills / Resume / Contact executes ZERO ecosystem work.
+  React.useEffect(() => {
+    if (!isInView) return;
+
+    const el = containerRef.current;
+    if (!el || typeof window === 'undefined') return;
+
+    let timer: number | null = null;
+    let isScrolling = false;
+
+    const onScroll = () => {
+      if (!isScrolling) {
+        isScrolling = true;
+        el.classList.add('is-scrolling');
+      }
+      if (timer !== null) {
+        window.clearTimeout(timer);
+      }
+      timer = window.setTimeout(() => {
+        isScrolling = false;
+        el.classList.remove('is-scrolling');
+      }, 150);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (timer !== null) {
+        window.clearTimeout(timer);
+      }
+      el.classList.remove('is-scrolling');
+    };
+  }, [isInView]);
 
   return (
     <div 

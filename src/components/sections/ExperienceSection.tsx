@@ -140,15 +140,15 @@ const ExperienceTimelineItem: React.FC<{
             )}
           </div>
 
-          {/* Expanded Content with Smooth Animation */}
+          {/* Expanded Content with AnimatePresence - compositor-only opacity and translateY, unmounted when collapsed */}
           <AnimatePresence initial={false}>
             {isExpanded && (
               <motion.div
                 key="details"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+                initial={{ opacity: 0, y: -6, scale: 0.99 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -4, scale: 0.99 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
                 className="overflow-hidden"
               >
                 <div className="mt-4 pt-4 border-t border-white/10">
@@ -218,8 +218,8 @@ export const ExperienceSection: React.FC = React.memo(() => {
   }
 
   const scrollToSkillsSection = useCallback(() => {
-    // Wait for the collapse animation to complete, then scroll smoothly to the Technical Skills (Stack) section
-    setTimeout(() => {
+    // Immediate interaction response: single RAF allows React to commit DOM state, then scroll immediately
+    requestAnimationFrame(() => {
       const skillsEl = document.getElementById('skills');
       if (skillsEl) {
         const navOffset = 80;
@@ -230,12 +230,12 @@ export const ExperienceSection: React.FC = React.memo(() => {
           behavior: 'smooth'
         });
       }
-    }, 260);
+    });
   }, []);
 
   const scrollToNextMilestone = useCallback((nextIndex: number) => {
-    // Wait for the collapse animation to complete before scrolling smoothly to the next milestone
-    setTimeout(() => {
+    // Immediate interaction response: single RAF allows React to commit DOM state, then scroll immediately
+    requestAnimationFrame(() => {
       const nextEl = itemRefs.current[nextIndex];
       if (nextEl) {
         const navOffset = 90; // Fixed navbar height (80px) + clearance
@@ -246,7 +246,7 @@ export const ExperienceSection: React.FC = React.memo(() => {
           behavior: 'smooth'
         });
       }
-    }, 260);
+    });
   }, []);
 
   const handleToggle = useCallback((id: string, index: number) => {

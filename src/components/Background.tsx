@@ -5,7 +5,7 @@ export const Background: React.FC = React.memo(() => {
   const spotlightRef = useSpotlight();
 
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#030303]">
+    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#030303] isolate">
       {/* Base Mesh Gradient */}
       <div className="absolute inset-0 mesh-gradient opacity-40" />
       
@@ -21,10 +21,25 @@ export const Background: React.FC = React.memo(() => {
         className="fixed top-0 left-0 rounded-full pointer-events-none transition-opacity duration-300"
       />
 
-      {/* Subtle Ambient Blobs */}
-      <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-blue-600/10 blur-[120px] rounded-full animate-float" />
-      <div className="absolute top-1/2 -right-40 w-[600px] h-[600px] bg-purple-600/10 blur-[140px] rounded-full animate-float-delayed" />
-      <div className="absolute bottom-0 left-1/4 w-[450px] h-[450px] bg-blue-400/5 blur-[100px] rounded-full animate-float" />
+      {/* Subtle Ambient Blobs - Fast GPU-composited radial glow fields (zero blur filter cost) */}
+      <div 
+        className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full animate-float pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.14) 0%, rgba(37, 99, 235, 0.05) 45%, transparent 70%)',
+        }}
+      />
+      <div 
+        className="absolute top-1/2 -right-40 w-[600px] h-[600px] rounded-full animate-float-delayed pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.12) 0%, rgba(147, 51, 234, 0.04) 45%, transparent 70%)',
+        }}
+      />
+      <div 
+        className="absolute bottom-0 left-1/4 w-[450px] h-[450px] rounded-full animate-float pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.08) 0%, rgba(96, 165, 250, 0.02) 45%, transparent 70%)',
+        }}
+      />
 
       {/* Floating Particles - CSS Accelerated */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

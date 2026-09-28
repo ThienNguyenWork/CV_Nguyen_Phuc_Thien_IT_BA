@@ -10,7 +10,6 @@ import LazySection from './components/LazySection';
 
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { useActiveSection } from './hooks/useActiveSection';
-import { useSectionVisibility } from './hooks/useSectionVisibility';
 
 // Code-split all major below-the-fold sections via React.lazy
 const AboutSection = lazy(() => import('./components/sections/AboutSection'));
@@ -21,7 +20,6 @@ const ResumeSection = lazy(() => import('./components/sections/ResumeSection'));
 const ContactSection = lazy(() => import('./components/sections/ContactSection'));
 
 const NAVBAR_SECTION_IDS = ['about', 'work', 'resume', 'contact'];
-const ALL_SECTION_IDS = ['about', 'ecosystem', 'work', 'skills', 'resume', 'contact'] as const;
 
 // Isolated Navbar component that tracks active section without re-rendering App root
 const ConnectedNavbar: React.FC<{
@@ -40,11 +38,6 @@ const ConnectedNavbar: React.FC<{
 
 export default function App() {
   const { scrollToSection, scrollToTop } = useSmoothScroll(80);
-  const {
-    isNearViewport,
-    hasEnteredViewport,
-    registerSection
-  } = useSectionVisibility(ALL_SECTION_IDS, { rootMargin: '350px 0px' });
 
   return (
     <div className="min-h-screen bg-[#030303] text-white selection:bg-blue-500/30 selection:text-white overflow-x-hidden">
@@ -74,57 +67,29 @@ export default function App() {
             <HeroSection onNavigate={scrollToSection} />
 
             {/* Below-the-fold major sections dynamically loaded only when approaching viewport */}
-            <LazySection
-              id="about"
-              minHeight="min-h-[500px]"
-              hasEntered={hasEnteredViewport('about')}
-              registerRef={registerSection('about')}
-            >
+            <LazySection id="about" minHeight="min-h-[500px]">
               <AboutSection />
             </LazySection>
 
-            <LazySection
-              id="ecosystem"
+            <LazySection 
+              id="ecosystem" 
               minHeight="min-h-[800px]"
-              hasEntered={hasEnteredViewport('ecosystem')}
-              registerRef={registerSection('ecosystem')}
-            >
-              <EcosystemSection isVisible={isNearViewport('ecosystem')} />
-            </LazySection>
+              renderContent={(isVisible) => <EcosystemSection isVisible={isVisible} />}
+            />
 
-            <LazySection
-              id="work"
-              minHeight="min-h-[700px]"
-              hasEntered={hasEnteredViewport('work')}
-              registerRef={registerSection('work')}
-            >
+            <LazySection id="work" minHeight="min-h-[700px]">
               <ExperienceSection />
             </LazySection>
 
-            <LazySection
-              id="skills"
-              minHeight="min-h-[400px]"
-              hasEntered={hasEnteredViewport('skills')}
-              registerRef={registerSection('skills')}
-            >
+            <LazySection id="skills" minHeight="min-h-[400px]">
               <TechnicalSkillsSection />
             </LazySection>
 
-            <LazySection
-              id="resume"
-              minHeight="min-h-[900px]"
-              hasEntered={hasEnteredViewport('resume')}
-              registerRef={registerSection('resume')}
-            >
+            <LazySection id="resume" minHeight="min-h-[900px]">
               <ResumeSection />
             </LazySection>
 
-            <LazySection
-              id="contact"
-              minHeight="min-h-[250px]"
-              hasEntered={hasEnteredViewport('contact')}
-              registerRef={registerSection('contact')}
-            >
+            <LazySection id="contact" minHeight="min-h-[250px]">
               <ContactSection />
             </LazySection>
           </motion.div>
