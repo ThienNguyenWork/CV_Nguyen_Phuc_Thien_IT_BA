@@ -43,9 +43,13 @@ export const LazySection: React.FC<LazySectionProps> = React.memo(({
       ([entry]) => {
         if (!entry) return;
         const intersecting = entry.isIntersecting;
-        setIsVisible(intersecting);
         if (intersecting) {
           setHasEntered(true);
+        }
+        if (renderContent) {
+          setIsVisible(intersecting);
+        } else if (intersecting) {
+          observer.disconnect();
         }
       },
       { rootMargin }

@@ -1,11 +1,40 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import useSpotlight from '../hooks/useSpotlight';
+
+// Precomputed static particle definitions to avoid array allocation on render
+const PARTICLES = Array.from({ length: 14 }, (_, i) => ({
+  top: `${(i * 19 + 5) % 100}%`,
+  left: `${(i * 23 + 11) % 100}%`,
+  animationDuration: `${3 + (i % 5)}s`
+}));
 
 export const Background: React.FC = React.memo(() => {
   const spotlightRef = useSpotlight();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof document === 'undefined') return;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        el.classList.add('bg-paused');
+      } else {
+        el.classList.remove('bg-paused');
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange, { passive: true });
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
 
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#030303] isolate">
+    <div 
+      ref={containerRef}
+      className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#030303] isolate"
+    >
       {/* Base Mesh Gradient */}
       <div className="absolute inset-0 mesh-gradient opacity-40" />
       
@@ -43,15 +72,15 @@ export const Background: React.FC = React.memo(() => {
 
       {/* Floating Particles - CSS Accelerated */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(14)].map((_, i) => (
+        {PARTICLES.map((particle, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-blue-400 rounded-full animate-pulse"
             style={{
-              top: `${(i * 19 + 5) % 100}%`,
-              left: `${(i * 23 + 11) % 100}%`,
+              top: particle.top,
+              left: particle.left,
               opacity: 0.25,
-              animationDuration: `${3 + (i % 5)}s`
+              animationDuration: particle.animationDuration
             }}
           />
         ))}

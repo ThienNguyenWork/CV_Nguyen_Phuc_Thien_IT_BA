@@ -33,10 +33,10 @@ export const TechnicalSkillsSection: React.FC = React.memo(() => {
     <section className="mb-48 max-w-6xl mx-auto px-8">
       <SectionHeading title="Technical Skills" subtitle="Stack" />
       <motion.div 
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.5 }}
+        viewport={{ once: true, amount: 0.05 }}
+        transition={{ duration: 0.4 }}
         className="grid grid-cols-1 md:grid-cols-3 gap-6"
       >
         <SkillCategoryCard title="BA Tools" icon={Layout} skills={baTools} />

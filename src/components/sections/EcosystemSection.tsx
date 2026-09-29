@@ -20,7 +20,6 @@ export const EcosystemSection: React.FC<EcosystemSectionProps> = React.memo(({ i
             background: 'radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 65%)',
             animation: 'nebula-pulse-1 15s linear infinite',
             animationPlayState: isVisible ? 'running' : 'paused',
-            willChange: 'transform, opacity',
           }}
         />
         <div 
@@ -29,7 +28,6 @@ export const EcosystemSection: React.FC<EcosystemSectionProps> = React.memo(({ i
             background: 'radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.1) 0%, transparent 65%)',
             animation: 'nebula-pulse-2 20s linear infinite',
             animationPlayState: isVisible ? 'running' : 'paused',
-            willChange: 'transform, opacity',
           }}
         />
       </div>

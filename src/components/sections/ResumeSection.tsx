@@ -19,13 +19,13 @@ import {
 
 export const ResumeSection: React.FC = React.memo(() => {
   return (
-    <section className="mb-48 max-w-6xl mx-auto px-8">
+    <section className="mb-48 max-w-6xl mx-auto px-8" style={{ contain: 'layout style' }}>
       <div className="max-w-5xl mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.4 }}
           className="mb-12"
         >
           <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-blue-500 mb-4 block">My Professional Journey</span>
@@ -33,10 +33,10 @@ export const ResumeSection: React.FC = React.memo(() => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.98 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          viewport={{ once: true, amount: 0.05 }}
         >
           <SpotlightCard className="p-2 md:p-12 bg-[#0a0a0a] border border-white/5 hover:border-white/10 transition-[border-color] duration-300">
             <div className="mb-4 md:hidden text-center">

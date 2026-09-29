@@ -12,10 +12,10 @@ export const AboutSection: React.FC = React.memo(() => {
     <section className="mb-48 max-w-6xl mx-auto px-8">
       <div className="relative">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.4 }}
           className="flex items-start gap-4 mb-8"
         >
           <div className="w-2 h-12 bg-blue-600 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.5)]" />
@@ -27,10 +27,10 @@ export const AboutSection: React.FC = React.memo(() => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.4 }}
           >
             <p className="text-xl md:text-2xl text-gray-400 leading-relaxed mb-8">
               As an <span className="text-white font-medium">IT Business Analyst</span>, I thrive at the intersection of business strategy and software engineering. My mission is to translate complex business needs into clear, actionable technical specifications.
@@ -55,10 +55,10 @@ export const AboutSection: React.FC = React.memo(() => {
             {portraits.map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 0.85, rotate: item.rotate }}
+                initial={{ opacity: 0, scale: 0.9, rotate: item.rotate }}
                 whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                viewport={{ once: true, amount: 0.05 }}
+                transition={{ duration: 0.4, delay: i * 0.06 }}
                 className="w-40 h-56 md:w-48 md:h-64 rounded-2xl overflow-hidden border border-white/10 bg-white/5 shadow-2xl relative group"
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity" />

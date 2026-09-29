@@ -63,6 +63,8 @@ export const ContactSection: React.FC = React.memo(() => {
       <motion.div 
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
         className="mt-20 text-center"
       >
         <p className="text-[12vw] font-black text-white/5 select-none leading-none">PHUC THIEN</p>

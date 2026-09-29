@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
 interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -18,6 +18,15 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
   const rectRef = useRef<DOMRect | null>(null);
   const rafRef = useRef<number | null>(null);
   const posRef = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+  }, []);
 
   const updatePosition = () => {
     if (spotRef.current) {

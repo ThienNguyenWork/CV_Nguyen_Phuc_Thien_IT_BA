@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface UseSmoothCursorOptions {
   lerp?: number;
@@ -25,6 +25,8 @@ export function useSmoothCursor({
     let targetScale = 1;
     let currentScale = 1;
     let isHovering = false;
+    let lastTarget: EventTarget | null = null;
+    let currentInteractiveEl: Element | null = null;
 
     const updateLoop = () => {
       const diffX = targetX - currentX;
@@ -70,7 +72,18 @@ export function useSmoothCursor({
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
-      const hover = Boolean(target?.closest('button, a, .cursor-pointer, input, textarea, [role="button"]'));
+      if (!target || target === lastTarget) return;
+      lastTarget = target;
+
+      let hover = false;
+      if (currentInteractiveEl && currentInteractiveEl.contains(target)) {
+        hover = true;
+      } else {
+        const interactive = target.closest('button, a, .cursor-pointer, input, textarea, [role="button"]');
+        currentInteractiveEl = interactive;
+        hover = Boolean(interactive);
+      }
+
       if (hover !== isHovering) {
         isHovering = hover;
         targetScale = hover ? 1.5 : 1.0;

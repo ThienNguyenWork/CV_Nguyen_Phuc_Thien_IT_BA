@@ -121,3 +121,10 @@
   animation-play-state: paused !important;
 }
 
+/* Optimization: pause background animations when page/tab is hidden */
+.bg-paused .animate-float,
+.bg-paused .animate-float-delayed,
+.bg-paused .animate-pulse {
+  animation-play-state: paused !important;
+}
+
