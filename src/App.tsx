@@ -13,7 +13,7 @@ import { useActiveSection } from './hooks/useActiveSection';
 
 // Code-split all major below-the-fold sections via React.lazy
 const AboutSection = lazy(() => import('./components/sections/AboutSection'));
-const EcosystemSection = lazy(() => import('./components/sections/EcosystemSection'));
+const ProblemToSolutionSection = lazy(() => import('./components/sections/ProblemToSolutionSection'));
 const ExperienceSection = lazy(() => import('./components/sections/ExperienceSection'));
 const TechnicalSkillsSection = lazy(() => import('./components/sections/TechnicalSkillsSection'));
 const ResumeSection = lazy(() => import('./components/sections/ResumeSection'));
@@ -72,9 +72,9 @@ export default function App() {
             </LazySection>
 
             <LazySection 
-              id="ecosystem" 
-              minHeight="min-h-[800px]"
-              renderContent={(isVisible) => <EcosystemSection isVisible={isVisible} />}
+              id="problem-to-solution" 
+              minHeight="min-h-[450px]"
+              renderContent={(isVisible) => <ProblemToSolutionSection isVisible={isVisible} />}
             />
 
             <LazySection id="work" minHeight="min-h-[700px]">
